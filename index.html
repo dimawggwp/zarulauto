@@ -1,1026 +1,1464 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zarula Auto — Автошкола в Алматы</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --surface-0: #05070C;
-            --surface-1: #0A0D12;
-            --surface-2: #0F131C;
-            --surface-3: #161D2B;
-            --surface-4: #1E2636;
-            --surface-5: #263247;
-            
-            --accent: #E9A568;
-            --accent-bright: #FFB574;
-            --accent-dim: #B87D4A;
-            --support: #38BDF8;
-            
-            --text-primary: #FFFFFF;
-            --text-secondary: #A0AEC0;
-            --text-dim: #718096;
-            
-            --radius-sm: 8px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-full: 999px;
-            
-            --spacing-xs: clamp(0.5rem, 2vw, 0.75rem);
-            --spacing-sm: clamp(0.75rem, 2.5vw, 1rem);
-            --spacing-md: clamp(1rem, 3vw, 1.5rem);
-            --spacing-lg: clamp(1.5rem, 4vw, 2.5rem);
-            --spacing-xl: clamp(2rem, 6vw, 4rem);
-            --spacing-2xl: clamp(3rem, 8vw, 6rem);
-            
-            --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        body {
-            font-family: var(--font-body);
-            background: var(--surface-0);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 var(--spacing-md);
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: rgba(10, 13, 18, 0.9);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-            background: rgba(10, 13, 18, 0.95);
-            box-shadow: var(--shadow-md);
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: var(--spacing-md) 0;
-        }
-
-        .logo {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            color: var(--accent);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: var(--spacing-lg);
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: clamp(0.9rem, 1.5vw, 1rem);
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            display: grid;
-            place-items: center;
-            background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(233, 165, 104, 0.15) 0%, transparent 70%);
-            border-radius: 50%;
-            animation: float 20s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-50px, 50px) scale(1.1); }
-        }
-
-        .hero-content {
-            text-align: center;
-            z-index: 1;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 5rem);
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1.1;
-            margin-bottom: var(--spacing-md);
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-bright) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: var(--text-secondary);
-            margin-bottom: var(--spacing-xl);
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: var(--spacing-md);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 3vw, 2.5rem);
-            border-radius: var(--radius-full);
-            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
-            color: var(--surface-0);
-            box-shadow: 0 4px 20px rgba(233, 165, 104, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 30px rgba(233, 165, 104, 0.4);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-primary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Section Base */
-        section {
-            padding: var(--spacing-2xl) 0;
-            position: relative;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3.5rem);
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-bottom: var(--spacing-sm);
-            color: var(--text-primary);
-        }
-
-        .section-subtitle {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Packages Section */
-        .packages {
-            background: linear-gradient(180deg, var(--surface-0) 0%, var(--surface-1) 100%);
-        }
-
-        .packages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-xl);
-        }
-
-        .package-card {
-            background: var(--surface-2);
-            border-radius: var(--radius-lg);
-            padding: var(--spacing-lg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .package-card.visible {
-            animation: slideInUp 0.6s ease-out forwards;
-        }
-
-        @keyframes slideInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .package-card:hover {
-            transform: translateY(-8px);
-            border-color: var(--accent);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .package-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-bright) 100%);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .package-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .package-card.featured {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface-3) 100%);
-        }
-
-        .package-card.featured::before {
-            transform: scaleX(1);
-        }
-
-        .package-badge {
-            display: inline-block;
-            padding: 0.4rem 1rem;
-            background: var(--accent);
-            color: var(--surface-0);
-            border-radius: var(--radius-full);
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .package-name {
-            font-size: clamp(1.5rem, 3vw, 2rem);
-            font-weight: 700;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .package-price {
-            font-size: clamp(2.5rem, 4vw, 3.5rem);
-            font-weight: 800;
-            color: var(--accent);
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .package-price span {
-            font-size: clamp(1rem, 2vw, 1.2rem);
-            color: var(--text-secondary);
-            font-weight: 400;
-        }
-
-        .package-features {
-            list-style: none;
-            margin: var(--spacing-lg) 0;
-        }
-
-        .package-features li {
-            padding: var(--spacing-sm) 0;
-            display: flex;
-            align-items: flex-start;
-            gap: var(--spacing-sm);
-            color: var(--text-secondary);
-        }
-
-        .package-features li::before {
-            content: '✓';
-            color: var(--accent);
-            font-weight: 700;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        /* Video Section */
-        .video-section {
-            background: var(--surface-1);
-        }
-
-        .video-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-xl);
-        }
-
-        .video-card {
-            border-radius: var(--radius-md);
-            overflow: hidden;
-            background: var(--surface-2);
-            transition: transform 0.3s ease;
-            opacity: 0;
-            transform: scale(0.9);
-        }
-
-        .video-card.visible {
-            animation: zoomIn 0.5s ease-out forwards;
-        }
-
-        @keyframes zoomIn {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .video-card:hover {
-            transform: scale(1.02);
-        }
-
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-        }
-
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Locations Section */
-        .locations {
-            background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
-        }
-
-        .locations-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-xl);
-        }
-
-        .location-card {
-            background: var(--surface-3);
-            border-radius: var(--radius-md);
-            padding: var(--spacing-lg);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateX(-30px);
-        }
-
-        .location-card.visible {
-            animation: slideInRight 0.6s ease-out forwards;
-        }
-
-        @keyframes slideInRight {
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .location-card:hover {
-            background: var(--surface-4);
-            border-color: var(--support);
-        }
-
-        .location-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(56, 189, 248, 0.1);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 1.5rem;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .location-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-xs);
-        }
-
-        .location-address {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            margin-bottom: var(--spacing-md);
-        }
-
-        .location-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--support);
-            text-decoration: none;
-            font-weight: 500;
-            transition: gap 0.3s ease;
-        }
-
-        .location-link:hover {
-            gap: 0.8rem;
-        }
-
-        /* Features Section */
-        .features {
-            background: var(--surface-2);
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: var(--spacing-lg);
-            margin-top: var(--spacing-xl);
-        }
-
-        .feature-card {
-            text-align: center;
-            padding: var(--spacing-lg);
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .feature-card.visible {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        .feature-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, rgba(233, 165, 104, 0.1) 0%, rgba(233, 165, 104, 0.05) 100%);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            margin: 0 auto var(--spacing-md);
-            font-size: 2rem;
-        }
-
-        .feature-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: var(--spacing-sm);
-        }
-
-        .feature-description {
-            color: var(--text-secondary);
-        }
-
-        /* Contact Section */
-        .contact {
-            background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
-        }
-
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: var(--spacing-md);
-            margin-top: var(--spacing-xl);
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: var(--spacing-md);
-            padding: var(--spacing-md);
-            background: var(--surface-3);
-            border-radius: var(--radius-md);
-            transition: background 0.3s ease;
-        }
-
-        .contact-item:hover {
-            background: var(--surface-4);
-        }
-
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(233, 165, 104, 0.1);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            font-size: 1.5rem;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--surface-0);
-            padding: var(--spacing-xl) 0 var(--spacing-md);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .footer-content {
-            text-align: center;
-            color: var(--text-secondary);
-        }
-
-        /* WhatsApp Button */
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
-            z-index: 1000;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .whatsapp-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
-        }
-
-        .whatsapp-btn svg {
-            width: 32px;
-            height: 32px;
-            fill: white;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: var(--surface-2);
-                flex-direction: column;
-                padding: var(--spacing-md);
-                gap: var(--spacing-md);
-                box-shadow: var(--shadow-lg);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .packages-grid,
-            .video-grid,
-            .locations-grid,
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-            }
-        }
-
-        /* Scroll Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
-        }
-
-        .animate-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zarul Auto — Автошкола в Алматы и Талдыкоргане</title>
+<meta name="description" content="Автошкола Zarul Auto: теория, ПДД-тесты спецзоны, вождение город и автодром, медсправка. 5 филиалов. Пакеты от 120 000 ₸.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ТОКЕНЫ ТЕМЫ — жёлто-белая палитра
+   ============================================================ */
+:root{
+  --bg:#FFFFFF;
+  --bg-soft:#FFFBF0;
+  --bg-deep:#FFF3CE;
+  --surface:#FFFFFF;
+  --surface-2:#FFFCF3;
+  --text:#171310;
+  --text-2:#5A5648;
+  --text-3:#928C76;
+  --line:#F0E6C6;
+  --line-strong:#E4D6A0;
+  --brand:#E8A400;
+  --brand-2:#FFD23F;
+  --brand-soft:#FFF4D2;
+  --on-soft:#191400;      /* текст/иконки на бледно-жёлтых поверхностях */
+  --ink:#191400;          /* текст на залитых ярко-жёлтых поверхностях */
+  --ok:#1E8E5A;
+  --warn:#D9822B;
+  --shadow-s:0 2px 8px rgba(30,22,0,.08);
+  --shadow-m:0 10px 30px rgba(30,22,0,.10);
+  --shadow-l:0 24px 60px rgba(30,22,0,.16);
+  --hero-grad:radial-gradient(1200px 600px at 78% -12%, #FFE9AE 0%, rgba(255,255,255,0) 62%),
+              radial-gradient(900px 500px at 8% 8%, #FFF3C6 0%, rgba(255,255,255,0) 60%);
+  --r-s:12px; --r-m:18px; --r-l:26px; --r-xl:34px; --r-full:999px;
+  --nav-bg:rgba(255,255,255,.82);
+}
+[data-theme="vivid"]{
+  --bg:#15110A;
+  --bg-soft:#1E1810;
+  --bg-deep:#241C0E;
+  --surface:#1F190F;
+  --surface-2:#251E12;
+  --text:#FFFFFF;
+  --text-2:#E4DAC0;
+  --text-3:#B3A783;
+  --line:rgba(255,210,63,.14);
+  --line-strong:rgba(255,210,63,.26);
+  --brand:#FFD23F;
+  --brand-2:#FFA800;
+  --brand-soft:rgba(255,210,63,.14);
+  --on-soft:#FFD23F;      /* на тёмных поверхностях акцент читается ярко-жёлтым */
+  --ok:#2FD69A;
+  --warn:#FFB05C;
+  --shadow-s:0 2px 10px rgba(0,0,0,.35);
+  --shadow-m:0 14px 36px rgba(0,0,0,.45);
+  --shadow-l:0 28px 70px rgba(0,0,0,.55);
+  --hero-grad:radial-gradient(1100px 620px at 80% -10%, #6B4B00 0%, rgba(21,17,10,0) 62%),
+              radial-gradient(900px 520px at 5% 10%, #3A2900 0%, rgba(21,17,10,0) 60%);
+  --nav-bg:rgba(21,17,10,.72);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;
+  overflow-x:hidden;transition:background .45s ease,color .45s ease;
+}
+img,svg,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button,input,textarea,select{font:inherit;color:inherit}
+::selection{background:var(--brand-2);color:var(--ink)}
+
+.wrap{width:min(1240px,100% - 40px);margin-inline:auto}
+@media(max-width:640px){.wrap{width:min(1240px,100% - 28px)}}
+
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--on-soft);background:var(--brand-soft);
+  padding:7px 14px;border-radius:var(--r-full);
+}
+h1,h2,h3,h4{line-height:1.12;letter-spacing:-.025em;font-weight:800}
+h1{font-size:clamp(2.1rem,5.4vw,4.2rem)}
+h2{font-size:clamp(1.75rem,3.9vw,3rem)}
+h3{font-size:clamp(1.05rem,1.9vw,1.35rem)}
+.lead{font-size:clamp(1rem,1.55vw,1.18rem);color:var(--text-2)}
+
+.sec{padding:clamp(60px,8vw,118px) 0;position:relative}
+.sec-soft{background:var(--bg-soft)}
+.sec-head{max-width:760px;margin-bottom:clamp(32px,5vw,56px)}
+.sec-head.center{margin-inline:auto;text-align:center}
+.sec-head h2{margin:16px 0 14px}
+
+/* ============================================================
+   КНОПКИ
+   ============================================================ */
+.btn{
+  --bh:54px;
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  height:var(--bh);padding:0 26px;border:0;border-radius:var(--r-full);
+  font-weight:700;font-size:15px;cursor:pointer;white-space:nowrap;
+  transition:transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s,background .22s,color .22s;
+}
+.btn:active{transform:scale(.97)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));color:var(--ink);
+  box-shadow:0 10px 26px -8px color-mix(in srgb,var(--brand) 70%,transparent);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 38px -10px color-mix(in srgb,var(--brand) 70%,transparent)}
+.btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--line-strong)}
+.btn-ghost:hover{background:var(--surface-2);border-color:var(--on-soft);color:var(--on-soft)}
+.btn-soft{background:var(--brand-soft);color:var(--on-soft)}
+.btn-soft:hover{transform:translateY(-2px)}
+.btn-block{width:100%}
+.btn-sm{--bh:44px;padding:0 20px;font-size:14px}
+
+/* ============================================================
+   ШАПКА
+   ============================================================ */
+.hdr{
+  position:fixed;inset:0 0 auto 0;z-index:900;
+  background:var(--nav-bg);backdrop-filter:blur(16px) saturate(160%);
+  -webkit-backdrop-filter:blur(16px) saturate(160%);
+  border-bottom:1px solid transparent;transition:border-color .3s,box-shadow .3s;
+}
+.hdr.stuck{border-bottom-color:var(--line);box-shadow:var(--shadow-s)}
+.nav{display:flex;align-items:center;gap:20px;height:76px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:800;font-size:19px;letter-spacing:-.03em;flex-shrink:0}
+.brand-mark{
+  width:38px;height:38px;border-radius:11px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));
+  display:grid;place-items:center;color:var(--ink);font-size:15px;font-weight:800;
+  box-shadow:0 6px 16px -4px color-mix(in srgb,var(--brand) 60%,transparent);
+}
+.nav-links{display:flex;gap:4px;list-style:none;margin-left:14px}
+.nav-links a{
+  padding:9px 14px;border-radius:var(--r-full);font-size:14.5px;font-weight:600;
+  color:var(--text-2);transition:background .2s,color .2s;
+}
+.nav-links a:hover{background:var(--brand-soft);color:var(--on-soft)}
+.nav-tools{display:flex;align-items:center;gap:10px;margin-left:auto}
+
+.lang{display:flex;background:var(--surface-2);border:1px solid var(--line);border-radius:var(--r-full);padding:3px}
+[data-theme="vivid"] .lang{background:rgba(255,255,255,.07)}
+.lang button{
+  background:none;border:0;cursor:pointer;padding:6px 12px;border-radius:var(--r-full);
+  font-size:13px;font-weight:700;color:var(--text-3);transition:.2s;
+}
+.lang button.on{background:var(--brand);color:var(--ink);box-shadow:var(--shadow-s)}
+
+.theme-btn{
+  width:44px;height:44px;border-radius:var(--r-full);cursor:pointer;
+  background:var(--surface-2);border:1px solid var(--line);
+  display:grid;place-items:center;color:var(--text-2);transition:.25s;
+}
+[data-theme="vivid"] .theme-btn{background:rgba(255,255,255,.07)}
+.theme-btn:hover{color:var(--on-soft);border-color:var(--on-soft);transform:rotate(18deg)}
+.theme-btn svg{width:19px;height:19px}
+.ico-moon{display:none}
+[data-theme="vivid"] .ico-sun{display:none}
+[data-theme="vivid"] .ico-moon{display:block}
+
+.burger{display:none;width:44px;height:44px;border-radius:12px;background:var(--surface-2);border:1px solid var(--line);cursor:pointer;place-items:center}
+.burger span{display:block;width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
+.burger span+span{margin-top:4px}
+.burger.on span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.burger.on span:nth-child(2){opacity:0}
+.burger.on span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+@media(max-width:1060px){
+  .nav-links{
+    position:fixed;inset:76px 0 auto 0;flex-direction:column;gap:2px;margin:0;
+    background:var(--bg);padding:16px;border-bottom:1px solid var(--line);
+    box-shadow:var(--shadow-m);transform:translateY(-130%);transition:transform .38s cubic-bezier(.2,.8,.2,1);
+  }
+  .nav-links.open{transform:translateY(0)}
+  .nav-links a{display:block;padding:13px 16px;font-size:16px}
+  .burger{display:grid}
+  .nav-hide{display:none}
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{padding:calc(76px + clamp(44px,6vw,84px)) 0 clamp(56px,7vw,96px);background:var(--hero-grad);position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.06fr .94fr;gap:clamp(30px,5vw,64px);align-items:center}
+.hero h1{margin:20px 0 20px}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero .lead{max-width:540px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin:32px 0 30px}
+.hero-note{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-3)}
+.hero-note svg{width:18px;height:18px;color:var(--ok);flex-shrink:0}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:38px;padding-top:32px;border-top:1px solid var(--line)}
+.stat b{display:block;font-size:clamp(1.55rem,3.2vw,2.3rem);font-weight:800;letter-spacing:-.04em;
+  background:linear-gradient(120deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.stat span{font-size:13.5px;color:var(--text-3);font-weight:500}
+
+.hero-card{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(22px,3vw,32px);box-shadow:var(--shadow-l);position:relative;
+  animation:rise .8s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes rise{from{opacity:0;transform:translateY(26px)}to{opacity:1;transform:none}}
+.hero-card h3{margin-bottom:6px}
+.hero-card p.sm{font-size:14px;color:var(--text-3);margin-bottom:20px}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:7px}
+.field input,.field select{
+  width:100%;height:50px;padding:0 16px;border-radius:var(--r-s);
+  background:var(--surface-2);border:1.5px solid var(--line);outline:none;transition:.2s;font-size:15px;
+}
+[data-theme="vivid"] .field input,[data-theme="vivid"] .field select{background:rgba(255,255,255,.06)}
+.field input:focus,.field select:focus{border-color:var(--brand);background:var(--surface);box-shadow:0 0 0 4px var(--brand-soft)}
+.field select{appearance:none;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A93A8' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 14px center;background-size:16px;padding-right:40px}
+.consent{font-size:12px;color:var(--text-3);text-align:center;margin-top:12px;line-height:1.5}
+
+@media(max-width:940px){
+  .hero-grid{grid-template-columns:1fr}
+  .hero-card{order:-1}
+  .stats{margin-top:28px}
+}
+@media(max-width:480px){.stats{grid-template-columns:1fr;gap:18px}}
+
+/* ============================================================
+   ЛОГО-ПОЛОСА / ПРЕИМУЩЕСТВА
+   ============================================================ */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(262px,1fr));gap:18px}
+.feat{
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);
+  padding:30px 26px;transition:transform .3s cubic-bezier(.2,.8,.2,1),box-shadow .3s,border-color .3s;
+}
+.feat:hover{transform:translateY(-6px);box-shadow:var(--shadow-m);border-color:color-mix(in srgb,var(--brand) 40%,var(--line))}
+.feat-ico{
+  width:52px;height:52px;border-radius:15px;display:grid;place-items:center;margin-bottom:18px;
+  background:var(--brand-soft);color:var(--on-soft);
+}
+.feat-ico svg{width:25px;height:25px}
+.feat h3{margin-bottom:9px}
+.feat p{font-size:14.5px;color:var(--text-2)}
+
+/* ============================================================
+   ПАКЕТЫ
+   ============================================================ */
+.pk-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22px;align-items:start}
+.pk{
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(26px,3vw,36px);position:relative;overflow:hidden;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s,border-color .35s;
+}
+.pk:hover{transform:translateY(-8px);box-shadow:var(--shadow-l)}
+.pk.top{border-color:var(--brand);box-shadow:var(--shadow-m)}
+.pk.top::after{content:"";position:absolute;inset:0 0 auto 0;height:5px;background:linear-gradient(90deg,var(--brand),var(--brand-2))}
+.pk-tag{position:absolute;top:22px;right:22px;background:linear-gradient(135deg,var(--brand),var(--brand-2));color:var(--ink);
+  font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:6px 13px;border-radius:var(--r-full)}
+.pk h3{font-size:1.4rem;margin-bottom:6px}
+.pk .pk-sub{font-size:14px;color:var(--text-3);margin-bottom:22px}
+.pk-price{display:flex;align-items:baseline;gap:7px;margin-bottom:6px}
+.pk-price b{font-size:clamp(2.1rem,4vw,2.9rem);font-weight:800;letter-spacing:-.045em}
+.pk-price span{font-size:1.15rem;font-weight:700;color:var(--text-3)}
+.pk-pay{font-size:13.5px;color:var(--text-3);margin-bottom:26px}
+.pk ul{list-style:none;display:grid;gap:13px;margin-bottom:28px}
+.pk li{display:flex;gap:11px;font-size:14.5px;color:var(--text-2);align-items:flex-start}
+.pk li svg{width:19px;height:19px;flex-shrink:0;margin-top:2px;color:var(--ok)}
+
+/* ============================================================
+   ЭТАПЫ
+   ============================================================ */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px;counter-reset:s}
+.step{position:relative;padding:28px 24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l)}
+.step::before{
+  counter-increment:s;content:"0" counter(s);
+  display:block;font-size:2.1rem;font-weight:800;letter-spacing:-.05em;margin-bottom:12px;
+  background:linear-gradient(120deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+}
+.step h3{font-size:1.08rem;margin-bottom:8px}
+.step p{font-size:14px;color:var(--text-2)}
+
+/* ============================================================
+   REELS — СВАЙП-ЛЕНТА
+   ============================================================ */
+.reels-head{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:30px}
+.reels-nav{display:flex;gap:9px}
+.rnav{
+  width:50px;height:50px;border-radius:var(--r-full);cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--line);color:var(--text);
+  display:grid;place-items:center;transition:.25s;
+}
+.rnav:hover:not(:disabled){background:var(--brand);border-color:var(--brand);color:var(--ink);transform:scale(1.07)}
+.rnav:disabled{opacity:.32;cursor:not-allowed}
+.rnav svg{width:20px;height:20px}
+
+.reels{
+  display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:6px 4px 22px;margin:0 -4px;
+  scrollbar-width:none;-ms-overflow-style:none;cursor:grab;
+}
+.reels::-webkit-scrollbar{display:none}
+.reels.drag{cursor:grabbing;scroll-snap-type:none}
+.reel{
+  position:relative;flex:0 0 clamp(210px,52vw,268px);aspect-ratio:9/16;
+  border-radius:var(--r-l);overflow:hidden;scroll-snap-align:start;
+  background:linear-gradient(150deg,var(--surface-2),var(--bg-deep));
+  border:1px solid var(--line);box-shadow:var(--shadow-s);
+  transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s;cursor:pointer;
+}
+.reel:hover{transform:translateY(-6px);box-shadow:var(--shadow-l)}
+.reel video,.reel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.reel::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to top,rgba(5,8,25,.82) 0%,rgba(5,8,25,.14) 44%,rgba(5,8,25,.06) 100%);
+}
+.reel-meta{position:absolute;inset:auto 0 0 0;padding:18px;z-index:2;color:#fff;pointer-events:none}
+.reel-meta b{display:block;font-size:14.5px;font-weight:700;margin-bottom:3px}
+.reel-meta span{font-size:12.5px;opacity:.82}
+.reel-play{
+  position:absolute;top:14px;right:14px;z-index:2;width:38px;height:38px;border-radius:var(--r-full);
+  background:rgba(255,255,255,.2);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.34);
+  display:grid;place-items:center;color:#fff;
+}
+.reel-play svg{width:15px;height:15px}
+.reels-hint{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-3);justify-content:center}
+.reels-hint svg{width:17px;height:17px}
+
+/* Лайтбокс reels */
+.lb{position:fixed;inset:0;z-index:1200;background:rgba(10,7,2,.93);backdrop-filter:blur(14px);
+  display:none;place-items:center;padding:20px;opacity:0;transition:opacity .3s}
+.lb.on{display:grid;opacity:1}
+.lb-stage{position:relative;width:min(430px,92vw);aspect-ratio:9/16;border-radius:var(--r-l);overflow:hidden;background:#000;box-shadow:var(--shadow-l)}
+.lb-stage video{width:100%;height:100%;object-fit:cover}
+.lb-close{position:absolute;top:20px;right:20px;width:46px;height:46px;border-radius:var(--r-full);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);color:#fff;cursor:pointer;display:grid;place-items:center}
+.lb-close svg{width:20px;height:20px}
+.lb-arrow{
+  position:absolute;top:50%;transform:translateY(-50%);width:52px;height:52px;border-radius:var(--r-full);
+  background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.26);color:#fff;cursor:pointer;
+  display:grid;place-items:center;transition:.22s;
+}
+.lb-arrow:hover{background:rgba(255,255,255,.28)}
+.lb-arrow.prev{left:max(16px,calc(50% - min(430px,92vw)/2 - 70px))}
+.lb-arrow.next{right:max(16px,calc(50% - min(430px,92vw)/2 - 70px))}
+.lb-arrow svg{width:21px;height:21px}
+.lb-link{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:3}
+@media(max-width:780px){.lb-arrow{display:none}}
+
+/* ============================================================
+   ФИЛИАЛЫ + ЯНДЕКС КАРТА
+   ============================================================ */
+.map-wrap{display:grid;grid-template-columns:385px 1fr;gap:22px;align-items:stretch}
+.branches{display:flex;flex-direction:column;gap:11px;max-height:560px;overflow-y:auto;padding-right:6px}
+.branches::-webkit-scrollbar{width:5px}
+.branches::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:99px}
+.branch{
+  text-align:left;width:100%;cursor:pointer;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-m);
+  padding:18px 20px;display:flex;gap:14px;align-items:flex-start;transition:.25s;
+}
+.branch:hover{border-color:var(--brand);transform:translateX(4px)}
+.branch.on{border-color:var(--brand);background:var(--brand-soft);box-shadow:var(--shadow-s)}
+.branch-pin{width:40px;height:40px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;
+  background:var(--brand-soft);color:var(--on-soft);font-weight:800;font-size:15px;transition:.25s}
+.branch.on .branch-pin{background:var(--brand);color:var(--ink)}
+.branch b{display:block;font-size:15px;font-weight:700;margin-bottom:3px}
+.branch span{font-size:13.5px;color:var(--text-2);display:block}
+.branch em{font-style:normal;font-size:12.5px;color:var(--text-3);display:block;margin-top:5px}
+.map-box{border-radius:var(--r-l);overflow:hidden;border:1px solid var(--line);min-height:480px;background:var(--surface-2);box-shadow:var(--shadow-s)}
+.map-box iframe{width:100%;height:100%;min-height:480px;border:0;display:block}
+@media(max-width:940px){
+  .map-wrap{grid-template-columns:1fr}
+  .branches{max-height:none;flex-direction:row;overflow-x:auto;padding-bottom:8px}
+  .branch{flex:0 0 268px}
+  .map-box,.map-box iframe{min-height:380px}
+}
+
+/* ============================================================
+   ТЕСТ ПДД
+   ============================================================ */
+.quiz{
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-xl);
+  padding:clamp(26px,4vw,44px);max-width:800px;margin-inline:auto;box-shadow:var(--shadow-m);
+}
+.quiz-bar{height:6px;border-radius:99px;background:var(--bg-deep);overflow:hidden;margin-bottom:26px}
+.quiz-bar i{display:block;height:100%;width:0;border-radius:99px;background:linear-gradient(90deg,var(--brand),var(--brand-2));transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.quiz-step{display:inline-block;font-size:13px;font-weight:700;color:var(--on-soft);letter-spacing:.04em;
+  background:var(--brand-soft);padding:5px 13px;border-radius:var(--r-full);margin-bottom:16px}
+.quiz-q{font-size:clamp(1.1rem,2.2vw,1.5rem);font-weight:800;letter-spacing:-.02em;margin-bottom:24px;line-height:1.3}
+.quiz-opts{display:grid;gap:11px;margin-bottom:24px}
+.opt{
+  text-align:left;cursor:pointer;padding:17px 20px;border-radius:var(--r-m);
+  background:var(--surface-2);border:1.5px solid var(--line);font-size:15px;font-weight:600;
+  display:flex;gap:13px;align-items:center;transition:.2s;width:100%;
+}
+[data-theme="vivid"] .opt{background:rgba(255,255,255,.05)}
+.opt:hover:not(.locked){border-color:var(--brand);transform:translateX(4px)}
+.opt.locked{cursor:default}
+.opt-k{width:28px;height:28px;border-radius:9px;flex-shrink:0;display:grid;place-items:center;
+  background:var(--bg-deep);font-size:13px;font-weight:800;color:var(--text-2)}
+[data-theme="vivid"] .opt-k{background:rgba(255,255,255,.1)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.opt.right .opt-k{background:var(--ok);color:#fff}
+.opt.wrong{border-color:#E4483D;background:rgba(228,72,61,.1)}
+.opt.wrong .opt-k{background:#E4483D;color:#fff}
+.quiz-exp{font-size:14.5px;color:var(--text-2);padding:16px 18px;border-radius:var(--r-m);
+  background:var(--brand-soft);border-left:3px solid var(--brand);margin-bottom:22px;display:none}
+.quiz-exp.on{display:block;animation:rise .35s both}
+.quiz-res{text-align:center;display:none}
+.quiz-res.on{display:block;animation:rise .45s both}
+.quiz-score{font-size:clamp(2.6rem,7vw,4rem);font-weight:800;letter-spacing:-.05em;
+  background:linear-gradient(120deg,var(--brand),var(--brand-2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.quiz-res p{color:var(--text-2);margin:8px 0 26px}
+.quiz-actions{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+
+/* ============================================================
+   FAQ
+   ============================================================ */
+.faq{max-width:840px;margin-inline:auto;display:grid;gap:11px}
+.fq{background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r-m);overflow:hidden;transition:border-color .25s}
+.fq.on{border-color:var(--brand)}
+.fq-q{
+  width:100%;cursor:pointer;background:none;border:0;text-align:left;
+  padding:22px 24px;display:flex;gap:16px;align-items:center;
+  font-size:16px;font-weight:700;letter-spacing:-.01em;
+}
+.fq-q i{margin-left:auto;flex-shrink:0;width:28px;height:28px;border-radius:9px;background:var(--brand-soft);color:var(--on-soft);
+  display:grid;place-items:center;font-style:normal;font-size:19px;font-weight:600;transition:transform .3s,background .3s,color .3s}
+.fq.on .fq-q i{transform:rotate(45deg);background:var(--brand);color:var(--ink)}
+.fq-a{max-height:0;overflow:hidden;transition:max-height .38s cubic-bezier(.2,.8,.2,1)}
+.fq-a p{padding:0 24px 22px;color:var(--text-2);font-size:15px}
+
+/* ============================================================
+   СОЦСЕТИ / CTA
+   ============================================================ */
+.cta{
+  border-radius:var(--r-xl);padding:clamp(34px,5vw,64px);text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--brand),var(--brand-2));color:var(--ink);box-shadow:var(--shadow-l);
+}
+.cta::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.35),transparent 66%);top:-46%;right:-12%;animation:drift 16s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:none}50%{transform:translate(-40px,36px) scale(1.12)}}
+.cta h2{color:var(--ink);margin-bottom:14px;position:relative}
+.cta p{color:rgba(25,20,0,.72);max-width:560px;margin:0 auto 32px;position:relative;font-size:1.05rem}
+.socials{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;position:relative}
+.soc{
+  display:inline-flex;align-items:center;gap:11px;height:56px;padding:0 26px;border-radius:var(--r-full);
+  background:rgba(25,20,0,.12);border:1px solid rgba(25,20,0,.26);color:var(--ink);
+  font-weight:700;font-size:15px;backdrop-filter:blur(8px);transition:.25s;
+}
+.soc:hover{background:#fff;color:var(--ink);transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,.2)}
+.soc svg{width:21px;height:21px}
+
+/* ============================================================
+   ПОДВАЛ
+   ============================================================ */
+.ftr{background:var(--bg-soft);border-top:1px solid var(--line);padding:56px 0 30px}
+.ftr-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:36px;margin-bottom:40px}
+.ftr h4{font-size:14px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;color:var(--text-3);font-weight:700}
+.ftr ul{list-style:none;display:grid;gap:11px}
+.ftr a,.ftr li{font-size:14.5px;color:var(--text-2)}
+.ftr a:hover{color:var(--on-soft)}
+.ftr p.about{font-size:14.5px;color:var(--text-2);max-width:330px;margin-top:14px}
+.ftr-bot{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  font-size:13.5px;color:var(--text-3)}
+@media(max-width:860px){.ftr-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.ftr-grid{grid-template-columns:1fr}}
+
+/* ============================================================
+   ПЛАВАЮЩИЙ WHATSAPP
+   ============================================================ */
+.wa{
+  position:fixed;right:22px;bottom:22px;z-index:1000;
+  width:62px;height:62px;border-radius:var(--r-full);
+  background:linear-gradient(135deg,#25D366,#128C7E);
+  display:grid;place-items:center;color:#fff;
+  box-shadow:0 12px 30px -6px rgba(37,211,102,.62);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),box-shadow .28s;
+}
+.wa::before{content:"";position:absolute;inset:0;border-radius:var(--r-full);
+  border:2px solid #25D366;animation:ring 2.4s ease-out infinite}
+@keyframes ring{0%{transform:scale(1);opacity:.75}100%{transform:scale(1.65);opacity:0}}
+.wa:hover{transform:scale(1.09) rotate(-6deg);box-shadow:0 18px 40px -6px rgba(37,211,102,.75)}
+.wa svg{width:31px;height:31px;position:relative}
+.wa-tip{
+  position:absolute;right:74px;top:50%;transform:translateY(-50%) translateX(8px);
+  background:var(--text);color:var(--bg);font-size:13.5px;font-weight:700;
+  padding:10px 15px;border-radius:var(--r-full);white-space:nowrap;
+  opacity:0;pointer-events:none;transition:.28s;box-shadow:var(--shadow-m);
+}
+.wa:hover .wa-tip{opacity:1;transform:translateY(-50%) translateX(0)}
+@media(max-width:640px){.wa{right:16px;bottom:16px;width:56px;height:56px}.wa-tip{display:none}}
+
+/* ============================================================
+   АНИМАЦИИ ПОЯВЛЕНИЯ
+   ============================================================ */
+.rv{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .rv{opacity:1;transform:none}
+}
+</style>
 </head>
 <body>
-    <!-- Header -->
-    <header id="header">
-        <div class="container">
-            <nav>
-                <div class="logo">Zarula Auto</div>
-                <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
-                <ul class="nav-links" id="navLinks">
-                    <li><a href="#home">Главная</a></li>
-                    <li><a href="#packages">Пакеты</a></li>
-                    <li><a href="#video">Видео</a></li>
-                    <li><a href="#locations">Филиалы</a></li>
-                    <li><a href="#contact">Контакты</a></li>
-                </ul>
-            </nav>
+
+<!-- ================= ШАПКА ================= -->
+<header class="hdr" id="hdr">
+  <div class="wrap">
+    <nav class="nav">
+      <a href="#top" class="brand"><span class="brand-mark">ZA</span>Zarul Auto</a>
+      <ul class="nav-links" id="menu">
+        <li><a href="#about" data-i="nav.about">Преимущества</a></li>
+        <li><a href="#packages" data-i="nav.packages">Пакеты</a></li>
+        <li><a href="#process" data-i="nav.process">Как проходит</a></li>
+        <li><a href="#reels" data-i="nav.reels">Видео</a></li>
+        <li><a href="#test" data-i="nav.test">Тест ПДД</a></li>
+        <li><a href="#branches" data-i="nav.branches">Филиалы</a></li>
+        <li><a href="#faq" data-i="nav.faq">Вопросы</a></li>
+      </ul>
+      <div class="nav-tools">
+        <div class="lang" id="lang">
+          <button data-lang="ru" class="on">RU</button>
+          <button data-lang="kk">KZ</button>
+          <button data-lang="en">EN</button>
         </div>
-    </header>
+        <button class="theme-btn" id="themeBtn" aria-label="Theme">
+          <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+        </button>
+        <a href="https://wa.me/77755342221" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-hide" data-i="nav.cta">Записаться</a>
+        <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+      </div>
+    </nav>
+  </div>
+</header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Получите права<br>с уверенностью</h1>
-                <p>Современная автошкола в Алматы с опытными инструкторами и индивидуальным подходом к каждому ученику</p>
-                <div class="cta-buttons">
-                    <a href="#packages" class="btn btn-primary">Выбрать пакет</a>
-                    <a href="#contact" class="btn btn-secondary">Связаться с нами</a>
-                </div>
-            </div>
+<!-- ================= HERO ================= -->
+<main id="top">
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow" data-i="hero.badge">5 филиалов — Алматы и Талдыкорган</span>
+      <h1><span data-i="hero.t1">Права категории B</span><br><em data-i="hero.t2">без пересдач</em></h1>
+      <p class="lead" data-i="hero.sub">Теория, ПДД-тесты спецзоны, вождение по городу и автодрому, медсправка и первая помощь — всё в одном пакете. Группы утром, днём и вечером.</p>
+      <div class="hero-cta">
+        <a href="#packages" class="btn btn-primary" data-i="hero.cta1">Смотреть пакеты</a>
+        <a href="#test" class="btn btn-ghost" data-i="hero.cta2">Пройти тест ПДД</a>
+      </div>
+      <div class="hero-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        <span data-i="hero.note">Рассрочка 0% · Документы за один визит · Официальный договор</span>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>5</b><span data-i="stat.branches">филиалов</span></div>
+        <div class="stat"><b>95%</b><span data-i="stat.pass">сдают с первого раза</span></div>
+        <div class="stat"><b>12+</b><span data-i="stat.years">лет на рынке</span></div>
+      </div>
+    </div>
+
+    <form class="hero-card" id="leadForm">
+      <h3 data-i="form.title">Запись на бесплатное занятие</h3>
+      <p class="sm" data-i="form.sub">Перезвоним в течение 15 минут и подберём группу</p>
+      <div class="field">
+        <label data-i="form.name">Имя</label>
+        <input type="text" id="fName" required data-ip="form.namePh" placeholder="Ваше имя">
+      </div>
+      <div class="field">
+        <label data-i="form.phone">Телефон</label>
+        <input type="tel" id="fPhone" required placeholder="+7 (___) ___-__-__">
+      </div>
+      <div class="field">
+        <label data-i="form.branch">Филиал</label>
+        <select id="fBranch">
+          <option>Проспект Абая, 76 — Алматы</option>
+          <option>Утеген батыра, 11а — Алматы</option>
+          <option>Желтоксан, 118 — Алматы</option>
+          <option>БЦ SAYAHAT, Пушкина, 2 — Алматы</option>
+          <option>И. Жансугурова, 118 — Талдыкорган</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-i="form.pkg">Пакет</label>
+        <select id="fPkg">
+          <option data-i="pk.basic">Базовый — 120 000 ₸</option>
+          <option data-i="pk.comfort">Комфорт — 150 000 ₸</option>
+          <option data-i="pk.pro">Про — 200 000 ₸</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block" data-i="form.send">Отправить в WhatsApp</button>
+      <p class="consent" data-i="form.consent">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+    </form>
+  </div>
+</section>
+
+<!-- ================= ПРЕИМУЩЕСТВА ================= -->
+<section class="sec sec-soft" id="about">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="adv.badge">Почему мы</span>
+      <h2 data-i="adv.title">Обучение, после которого действительно ездят</h2>
+      <p class="lead" data-i="adv.sub">Мы убрали всё лишнее и оставили то, что даёт результат на экзамене и на дороге.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M6.5 17l1.6-5.2A2 2 0 0110 10.3h4a2 2 0 011.9 1.5L17.5 17M5 17v2.5M19 17v2.5M7.5 13.8h9"/></svg></div>
+        <h3 data-i="adv.1t">Вождение с первой недели</h3>
+        <p data-i="adv.1d">Не ждёте окончания теории — практика начинается параллельно, на автодроме и в городе.</p>
+      </div>
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A2 2 0 016 3.5h5.2v17H6a2 2 0 01-2-2zM20 5.5a2 2 0 00-2-2h-5.2v17H18a2 2 0 002-2z"/></svg></div>
+        <h3 data-i="adv.2t">Тесты спецзоны</h3>
+        <p data-i="adv.2d">Готовим по актуальной базе вопросов спецзоны — те же билеты, что и на реальном экзамене.</p>
+      </div>
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20.5a7.5 7.5 0 0115 0"/></svg></div>
+        <h3 data-i="adv.3t">Инструктор под вас</h3>
+        <p data-i="adv.3d">Выбираете инструктора и удобное время. Не подошёл — меняем без вопросов и доплат.</p>
+      </div>
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7.5 3v5.6c0 4.4-3 8.3-7.5 9.4-4.5-1.1-7.5-5-7.5-9.4V6z"/><path d="M9.3 12l1.9 1.9 3.6-3.7"/></svg></div>
+        <h3 data-i="adv.4t">Всё включено</h3>
+        <p data-i="adv.4d">Медсправка, курс первой помощи и учебники входят в стоимость. Скрытых платежей нет.</p>
+      </div>
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></div>
+        <h3 data-i="adv.5t">Гибкий график</h3>
+        <p data-i="adv.5d">Утренние, дневные и вечерние группы, занятия по выходным — совмещайте с работой и учёбой.</p>
+      </div>
+      <div class="feat rv">
+        <div class="feat-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5l2.9 6 6.6.9-4.8 4.6 1.2 6.5-5.9-3.1-5.9 3.1 1.2-6.5L2.5 9.4l6.6-.9z"/></svg></div>
+        <h3 data-i="adv.6t">Сопровождение до прав</h3>
+        <p data-i="adv.6d">Записываем на экзамен, объясняем порядок сдачи и остаёмся на связи до получения удостоверения.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ПАКЕТЫ ================= -->
+<section class="sec" id="packages">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="pkg.badge">Стоимость</span>
+      <h2 data-i="pkg.title">Три пакета обучения</h2>
+      <p class="lead" data-i="pkg.sub">Категория B. Отличаются количеством практических занятий — теория и документы одинаковые везде.</p>
+    </div>
+    <div class="pk-grid">
+
+      <div class="pk rv">
+        <h3 data-i="pkg.b.name">Базовый</h3>
+        <p class="pk-sub" data-i="pkg.b.sub">Для тех, кто уже немного за рулём</p>
+        <div class="pk-price"><b>120 000</b><span>₸</span></div>
+        <p class="pk-pay" data-i="pkg.b.pay">или 10 000 ₸ / мес в рассрочку</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.theory">Уроки теории</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.book1">Книга теории ПДД</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.tests">ПДД-тесты спецзоны</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.drive5">Вождение — 5 уроков</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.med">Медицинская справка</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.aid">Первая медицинская помощь</span></li>
+        </ul>
+        <button class="btn btn-ghost btn-block pk-btn" data-pkg="basic" data-i="pkg.choose">Выбрать пакет</button>
+      </div>
+
+      <div class="pk top rv">
+        <span class="pk-tag" data-i="pkg.popular">Выбирают чаще</span>
+        <h3 data-i="pkg.c.name">Комфорт</h3>
+        <p class="pk-sub" data-i="pkg.c.sub">Оптимальный баланс часов и цены</p>
+        <div class="pk-price"><b>150 000</b><span>₸</span></div>
+        <p class="pk-pay" data-i="pkg.c.pay">или 12 500 ₸ / мес в рассрочку</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.theory">Уроки теории</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.book2">Книги ПДД</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.tests">ПДД-тесты спецзоны</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.drive10">Вождение — 10 уроков: город и автодром</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.med">Медицинская справка</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.aid">Первая медицинская помощь</span></li>
+        </ul>
+        <button class="btn btn-primary btn-block pk-btn" data-pkg="comfort" data-i="pkg.choose">Выбрать пакет</button>
+      </div>
+
+      <div class="pk rv">
+        <h3 data-i="pkg.p.name">Про</h3>
+        <p class="pk-sub" data-i="pkg.p.sub">Максимум практики с нуля</p>
+        <div class="pk-price"><b>200 000</b><span>₸</span></div>
+        <p class="pk-pay" data-i="pkg.p.pay">или 16 600 ₸ / мес в рассрочку</p>
+        <ul>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.theory">Уроки теории</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.book2">Книги ПДД</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.tests">ПДД-тесты спецзоны</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.drive15">Вождение — 15 уроков: город и автодром</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.med">Медицинская справка</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg><span data-i="f.aid">Первая медицинская помощь</span></li>
+        </ul>
+        <button class="btn btn-ghost btn-block pk-btn" data-pkg="pro" data-i="pkg.choose">Выбрать пакет</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= ЭТАПЫ ================= -->
+<section class="sec sec-soft" id="process">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="proc.badge">Процесс</span>
+      <h2 data-i="proc.title">Путь от заявки до удостоверения</h2>
+      <p class="lead" data-i="proc.sub">Обычно занимает от полутора до двух месяцев.</p>
+    </div>
+    <div class="steps">
+      <div class="step rv"><h3 data-i="proc.1t">Заявка и договор</h3><p data-i="proc.1d">Оставляете заявку, выбираете филиал и пакет. Подписываем договор, фиксируем стоимость.</p></div>
+      <div class="step rv"><h3 data-i="proc.2t">Теория и тесты</h3><p data-i="proc.2d">Занятия в классе плюс доступ к тестам спецзоны — решаете билеты между уроками.</p></div>
+      <div class="step rv"><h3 data-i="proc.3t">Практика</h3><p data-i="proc.3d">Автодром и маршруты города с инструктором. Отрабатываем упражнения экзамена.</p></div>
+      <div class="step rv"><h3 data-i="proc.4t">Документы</h3><p data-i="proc.4d">Медсправка и курс первой помощи — оформляем сами, без беготни по клиникам.</p></div>
+      <div class="step rv"><h3 data-i="proc.5t">Экзамен</h3><p data-i="proc.5d">Записываем на сдачу, подсказываем порядок и сопровождаем до получения прав.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= REELS ================= -->
+<section class="sec" id="reels">
+  <div class="wrap">
+    <div class="reels-head rv">
+      <div class="sec-head" style="margin:0">
+        <span class="eyebrow" data-i="reels.badge">Видео</span>
+        <h2 data-i="reels.title">Как у нас проходит обучение</h2>
+        <p class="lead" data-i="reels.sub">Короткие ролики с занятий, автодрома и экзаменов — свайпайте влево и вправо.</p>
+      </div>
+      <div class="reels-nav">
+        <button class="rnav" id="rPrev" aria-label="Prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg></button>
+        <button class="rnav" id="rNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+    <div class="reels" id="reelsTrack"></div>
+    <div class="reels-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9l-3 3 3 3M17 9l3 3-3 3M10.5 12h3"/></svg>
+      <span data-i="reels.hint">Свайпните ленту или используйте стрелки</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ТЕСТ ПДД ================= -->
+<section class="sec sec-soft" id="test">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="quiz.badge">Бесплатно</span>
+      <h2 data-i="quiz.title">Мини-тест по ПДД</h2>
+      <p class="lead" data-i="quiz.sub">Пять вопросов из базы спецзоны — проверьте, насколько вы готовы к экзамену.</p>
+    </div>
+
+    <div class="quiz rv">
+      <div id="quizPlay">
+        <div class="quiz-bar"><i id="quizBar"></i></div>
+        <div class="quiz-step" id="quizStep">Вопрос 1 из 5</div>
+        <div class="quiz-q" id="quizQ"></div>
+        <div class="quiz-opts" id="quizOpts"></div>
+        <div class="quiz-exp" id="quizExp"></div>
+        <button class="btn btn-primary" id="quizNext" style="display:none" data-i="quiz.next">Следующий вопрос</button>
+      </div>
+
+      <div class="quiz-res" id="quizRes">
+        <div class="quiz-score"><span id="quizScore">0</span>/5</div>
+        <p id="quizVerdict"></p>
+        <div class="quiz-actions">
+          <button class="btn btn-ghost" id="quizAgain" data-i="quiz.again">Пройти заново</button>
+          <a href="#packages" class="btn btn-primary" data-i="quiz.toPkg">Выбрать пакет обучения</a>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Почему выбирают нас</h2>
-                <p class="section-subtitle">Мы предлагаем качественное обучение с гарантией результата</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">🚗</div>
-                    <h3 class="feature-title">Современный автопарк</h3>
-                    <p class="feature-description">Новые автомобили с кондиционером и всем необходимым оборудованием</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">👨‍🏫</div>
-                    <h3 class="feature-title">Опытные инструкторы</h3>
-                    <p class="feature-description">Профессиональные преподаватели с многолетним стажем</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">📚</div>
-                    <h3 class="feature-title">Полный курс теории</h3>
-                    <p class="feature-description">Все материалы для успешной сдачи экзаменов в ЦОНе</p>
-                </div>
-                <div class="feature-card animate-on-scroll">
-                    <div class="feature-icon">✅</div>
-                    <h3 class="feature-title">Высокий процент сдачи</h3>
-                    <p class="feature-description">95% наших учеников сдают экзамен с первого раза</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= ФИЛИАЛЫ + КАРТА ================= -->
+<section class="sec" id="branches">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="br.badge">Адреса</span>
+      <h2 data-i="br.title">Пять филиалов на карте</h2>
+      <p class="lead" data-i="br.sub">Выберите удобный филиал — карта покажет точное расположение и построит маршрут.</p>
+    </div>
 
-    <!-- Packages Section -->
-    <section class="packages" id="packages">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Выберите свой пакет</h2>
-                <p class="section-subtitle">Гибкие программы обучения для любого уровня подготовки</p>
-            </div>
-            <div class="packages-grid">
-                <!-- Basic Package -->
-                <div class="package-card animate-on-scroll">
-                    <div class="package-name">Базовый</div>
-                    <div class="package-price">120 000 <span>₸</span></div>
-                    <ul class="package-features">
-                        <li>Уроки теории</li>
-                        <li>Книга теории ПДД</li>
-                        <li>ПДД тесты спецзона</li>
-                        <li>Вождение 5 уроков</li>
-                        <li>Медицинская справка</li>
-                        <li>Первая медицинская помощь</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-secondary" style="width: 100%;">Выбрать</a>
-                </div>
+    <div class="map-wrap rv">
+      <div class="branches" id="branchList"></div>
+      <div class="map-box">
+        <iframe id="ymap" loading="lazy" allowfullscreen
+          src="https://yandex.kz/map-widget/v1/?text=%D0%90%D0%BB%D0%BC%D0%B0%D1%82%D1%8B%2C%20%D0%BF%D1%80%D0%BE%D1%81%D0%BF%D0%B5%D0%BA%D1%82%20%D0%90%D0%B1%D0%B0%D1%8F%2C%2076&z=17"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <!-- Comfort Package -->
-                <div class="package-card featured animate-on-scroll">
-                    <span class="package-badge">Популярный</span>
-                    <div class="package-name">Комфорт</div>
-                    <div class="package-price">150 000 <span>₸</span></div>
-                    <ul class="package-features">
-                        <li>Уроки теории</li>
-                        <li>Книга теории ПДД</li>
-                        <li>ПДД тесты спецзона</li>
-                        <li>Вождение 10 уроков (город + автодром)</li>
-                        <li>Медицинская справка</li>
-                        <li>Первая медицинская помощь</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-primary" style="width: 100%;">Выбрать</a>
-                </div>
+<!-- ================= FAQ ================= -->
+<section class="sec sec-soft" id="faq">
+  <div class="wrap">
+    <div class="sec-head center rv">
+      <span class="eyebrow" data-i="faq.badge">Вопросы</span>
+      <h2 data-i="faq.title">Частые вопросы</h2>
+    </div>
+    <div class="faq" id="faqList"></div>
+  </div>
+</section>
 
-                <!-- Pro Package -->
-                <div class="package-card animate-on-scroll">
-                    <div class="package-name">Про</div>
-                    <div class="package-price">200 000 <span>₸</span></div>
-                    <ul class="package-features">
-                        <li>Уроки теории</li>
-                        <li>Книга теории ПДД</li>
-                        <li>ПДД тесты спецзона</li>
-                        <li>Вождение 15 уроков (город + автодром)</li>
-                        <li>Медицинская справка</li>
-                        <li>Первая медицинская помощь</li>
-                    </ul>
-                    <a href="#contact" class="btn btn-secondary" style="width: 100%;">Выбрать</a>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= CTA + СОЦСЕТИ ================= -->
+<section class="sec" id="contacts">
+  <div class="wrap">
+    <div class="cta rv">
+      <h2 data-i="cta.title">Напишите нам — ответим за пару минут</h2>
+      <p data-i="cta.sub">Подскажем, какой пакет подойдёт именно вам, и запишем в ближайшую группу.</p>
+      <div class="socials">
+        <a href="https://wa.me/77755342221" target="_blank" rel="noopener" class="soc">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.96-.94 1.16c-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.48.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.89-9.89 9.89m8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.09.54 4.14 1.58 5.94L.06 24l6.3-1.65a11.88 11.88 0 005.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg>
+          <span>+7 775 534 2221</span>
+        </a>
+        <a href="https://www.instagram.com/zarulauto.kz?stkn=emp6YmZmMXIzbndk" target="_blank" rel="noopener" class="soc">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.4" cy="6.6" r="1.2" fill="currentColor" stroke="none"/></svg>
+          <span>Instagram</span>
+        </a>
+        <a href="https://www.tiktok.com/@zarulauto.kz?_r=1&_t=ZS-9A1XTpKIfHr" target="_blank" rel="noopener" class="soc">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 2h-3.1v14.2a2.6 2.6 0 11-2.6-2.6c.27 0 .53.04.78.12v-3.2a5.9 5.9 0 00-.78-.05 5.8 5.8 0 105.8 5.8V9.1a7.2 7.2 0 004.2 1.35V7.3a4.1 4.1 0 01-4.3-4.1V2z"/></svg>
+          <span>TikTok</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
 
-    <!-- Video Section -->
-    <section class="video-section" id="video">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Видео о нас</h2>
-                <p class="section-subtitle">Посмотрите, как проходит обучение в нашей автошколе</p>
-            </div>
-            <div class="video-grid">
-                <div class="video-card animate-on-scroll">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="video-card animate-on-scroll">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-                    </div>
-                </div>
-                <div class="video-card animate-on-scroll">
-                    <div class="video-wrapper">
-                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= ПОДВАЛ ================= -->
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr-grid">
+      <div>
+        <a href="#top" class="brand"><span class="brand-mark">ZA</span>Zarul Auto</a>
+        <p class="about" data-i="ftr.about">Автошкола категории B в Алматы и Талдыкоргане. Теория, практика и документы — в одном месте.</p>
+      </div>
+      <div>
+        <h4 data-i="ftr.nav">Разделы</h4>
+        <ul>
+          <li><a href="#packages" data-i="nav.packages">Пакеты</a></li>
+          <li><a href="#process" data-i="nav.process">Как проходит</a></li>
+          <li><a href="#test" data-i="nav.test">Тест ПДД</a></li>
+          <li><a href="#faq" data-i="nav.faq">Вопросы</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i="ftr.soc">Соцсети</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/zarulauto.kz?stkn=emp6YmZmMXIzbndk" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.tiktok.com/@zarulauto.kz?_r=1&_t=ZS-9A1XTpKIfHr" target="_blank" rel="noopener">TikTok</a></li>
+          <li><a href="https://wa.me/77755342221" target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 data-i="ftr.contacts">Контакты</h4>
+        <ul>
+          <li><a href="tel:+77755342221">+7 775 534 2221</a></li>
+          <li data-i="ftr.hours">Пн–Вс: 09:00 – 20:00</li>
+          <li data-i="ftr.cities">Алматы · Талдыкорган</li>
+        </ul>
+      </div>
+    </div>
+    <div class="ftr-bot">
+      <span>© <span id="year"></span> Zarul Auto</span>
+      <span data-i="ftr.rights">Все права защищены</span>
+    </div>
+  </div>
+</footer>
 
-    <!-- Locations Section -->
-    <section class="locations" id="locations">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Наши филиалы</h2>
-                <p class="section-subtitle">4 удобные локации по всему Алматы</p>
-            </div>
-            <div class="locations-grid">
-                <div class="location-card animate-on-scroll">
-                    <div class="location-icon">📍</div>
-                    <div class="location-name">Филиал 1</div>
-                    <div class="location-address">Алматы, удобное расположение</div>
-                    <a href="https://go.2gis.com/XSvNB" target="_blank" class="location-link">
-                        Открыть на карте →
-                    </a>
-                </div>
-                <div class="location-card animate-on-scroll">
-                    <div class="location-icon">📍</div>
-                    <div class="location-name">Филиал 2</div>
-                    <div class="location-address">Алматы, удобное расположение</div>
-                    <a href="https://go.2gis.com/uk9Wg" target="_blank" class="location-link">
-                        Открыть на карте →
-                    </a>
-                </div>
-                <div class="location-card animate-on-scroll">
-                    <div class="location-icon">📍</div>
-                    <div class="location-name">Филиал 3</div>
-                    <div class="location-address">Алматы, удобное расположение</div>
-                    <a href="https://go.2gis.com/DsKrj" target="_blank" class="location-link">
-                        Открыть на карте →
-                    </a>
-                </div>
-                <div class="location-card animate-on-scroll">
-                    <div class="location-icon">📍</div>
-                    <div class="location-name">Филиал 4</div>
-                    <div class="location-address">Алматы, удобное расположение</div>
-                    <a href="https://go.2gis.com/bUcQM" target="_blank" class="location-link">
-                        Открыть на карте →
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= WHATSAPP ================= -->
+<a href="https://wa.me/77755342221" target="_blank" rel="noopener" class="wa" aria-label="WhatsApp">
+  <span class="wa-tip" data-i="wa.tip">Написать в WhatsApp</span>
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15s-.77.96-.94 1.16c-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.4-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.03 1.02-1.03 2.48s1.06 2.88 1.21 3.08c.15.2 2.1 3.2 5.08 4.48.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.76-.72 2-1.42.25-.69.25-1.29.18-1.41-.08-.13-.27-.2-.57-.35M12.05 21.8h-.01a9.9 9.9 0 01-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 01-1.51-5.26c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.12 1.03 6.98 2.9a9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.89-9.89 9.89m8.41-18.3A11.82 11.82 0 0012.05 0C5.5 0 .16 5.34.16 11.9c0 2.09.54 4.14 1.58 5.94L.06 24l6.3-1.65a11.88 11.88 0 005.69 1.45h.01c6.55 0 11.89-5.34 11.89-11.9 0-3.17-1.24-6.16-3.48-8.4"/></svg>
+</a>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="container">
-            <div class="contact-content">
-                <div class="section-header">
-                    <h2 class="section-title">Свяжитесь с нами</h2>
-                    <p class="section-subtitle">Ответим на все ваши вопросы и поможем выбрать подходящий пакет</p>
-                </div>
-                <div class="contact-info">
-                    <div class="contact-item">
-                        <div class="contact-icon">📱</div>
-                        <div>
-                            <strong>Телефон</strong><br>
-                            +7 (XXX) XXX-XX-XX
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">✉️</div>
-                        <div>
-                            <strong>Email</strong><br>
-                            info@zarulaauto.kz
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <div class="contact-icon">⏰</div>
-                        <div>
-                            <strong>Режим работы</strong><br>
-                            Пн-Вс: 09:00 - 20:00
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- ================= ЛАЙТБОКС REELS ================= -->
+<div class="lb" id="lb">
+  <button class="lb-close" id="lbClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+  <button class="lb-arrow prev" id="lbPrev" aria-label="Prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19l-7-7 7-7"/></svg></button>
+  <div class="lb-stage" id="lbStage"></div>
+  <button class="lb-arrow next" id="lbNext" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+</div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 Zarula Auto. Все права защищены.</p>
-            </div>
-        </div>
-    </footer>
+<script>
+/* ============================================================
+   1. ДАННЫЕ: ФИЛИАЛЫ
+   ============================================================ */
+const BRANCHES = [
+  { city:{ru:'Алматы',kk:'Алматы',en:'Almaty'}, addr:{ru:'Проспект Абая, 76',kk:'Абай даңғылы, 76',en:'Abay Avenue, 76'},
+    q:'Алматы, проспект Абая, 76' },
+  { city:{ru:'Алматы',kk:'Алматы',en:'Almaty'}, addr:{ru:'Улица Утеген батыра, 11а',kk:'Өтеген батыр көшесі, 11а',en:'Utegen Batyr Street, 11a'},
+    q:'Алматы, улица Утеген батыра, 11а' },
+  { city:{ru:'Алматы',kk:'Алматы',en:'Almaty'}, addr:{ru:'Улица Желтоксан, 118',kk:'Желтоқсан көшесі, 118',en:'Zheltoksan Street, 118'},
+    q:'Алматы, улица Желтоксан, 118' },
+  { city:{ru:'Алматы',kk:'Алматы',en:'Almaty'}, addr:{ru:'БЦ SAYAHAT, улица Пушкина, 2',kk:'SAYAHAT БО, Пушкин көшесі, 2',en:'SAYAHAT Business Center, Pushkin Street, 2'},
+    q:'Алматы, улица Пушкина, 2, БЦ SAYAHAT' },
+  { city:{ru:'Талдыкорган',kk:'Талдықорған',en:'Taldykorgan'}, addr:{ru:'И. Жансугурова, 118',kk:'І. Жансүгіров көшесі, 118',en:'I. Zhansugurov Street, 118'},
+    q:'Талдыкорган, улица Ильяса Жансугурова, 118' }
+];
 
-    <!-- WhatsApp Button -->
-    <a href="https://wa.me/77XXXXXXXXX" target="_blank" class="whatsapp-btn" title="Написать в WhatsApp">
-        <svg viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-        </svg>
-    </a>
+/* ============================================================
+   2. ДАННЫЕ: REELS
+   ВАЖНО — сюда подставьте свои ролики.
+   src  : прямая ссылка на .mp4 (например, папка videos/ рядом с index.html)
+   post : картинка-превью (необязательно, видео само служит превью)
+   link : ссылка на оригинал в Instagram / TikTok
+   ============================================================ */
+const REELS = [
+  { src:'videos/reel1.mp4', post:'', link:'https://www.instagram.com/zarulauto.kz',
+    t:{ru:'Первое занятие на автодроме',kk:'Автодромдағы алғашқы сабақ',en:'First lesson at the training ground'},
+    s:{ru:'Практика',kk:'Тәжірибе',en:'Practice'} },
+  { src:'videos/reel2.mp4', post:'', link:'https://www.instagram.com/zarulauto.kz',
+    t:{ru:'Разбор билетов спецзоны',kk:'Арнайы аймақ билеттерін талдау',en:'Reviewing official test questions'},
+    s:{ru:'Теория',kk:'Теория',en:'Theory'} },
+  { src:'videos/reel3.mp4', post:'', link:'https://www.tiktok.com/@zarulauto.kz',
+    t:{ru:'Маршрут экзамена по городу',kk:'Қаладағы емтихан бағыты',en:'City exam route'},
+    s:{ru:'Город',kk:'Қала',en:'City'} },
+  { src:'videos/reel4.mp4', post:'', link:'https://www.instagram.com/zarulauto.kz',
+    t:{ru:'Параллельная парковка',kk:'Параллель тұрақ',en:'Parallel parking'},
+    s:{ru:'Упражнение',kk:'Жаттығу',en:'Exercise'} },
+  { src:'videos/reel5.mp4', post:'', link:'https://www.tiktok.com/@zarulauto.kz',
+    t:{ru:'Отзыв выпускницы',kk:'Түлектің пікірі',en:'Graduate review'},
+    s:{ru:'Отзывы',kk:'Пікірлер',en:'Reviews'} },
+  { src:'videos/reel6.mp4', post:'', link:'https://www.instagram.com/zarulauto.kz',
+    t:{ru:'Первая помощь на практике',kk:'Алғашқы көмек тәжірибеде',en:'First aid in practice'},
+    s:{ru:'Курс',kk:'Курс',en:'Course'} }
+];
 
-    <script>
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                    // Close mobile menu if open
-                    document.getElementById('navLinks').classList.remove('active');
-                }
-            });
-        });
+/* ============================================================
+   3. ДАННЫЕ: ТЕСТ ПДД
+   ============================================================ */
+const QUIZ = [
+  {
+    q:{ru:'На нерегулируемом перекрёстке равнозначных дорог без знаков приоритета вы должны уступить дорогу:',
+       kk:'Басымдық белгілері жоқ бірдей маңызды жолдардың реттелмейтін қиылысында сіз кімге жол беруіңіз керек?',
+       en:'At an unmarked intersection of equal roads with no priority signs, who must you give way to?'},
+    opts:{ru:['Автомобилю слева','Автомобилю справа','Тому, кто первым въехал на перекрёсток','Более крупному транспортному средству'],
+          kk:['Сол жақтағы көлікке','Оң жақтағы көлікке','Қиылысқа бірінші кірген көлікке','Үлкенірек көлік құралына'],
+          en:['The vehicle on your left','The vehicle on your right','Whoever entered the intersection first','The larger vehicle']},
+    correct:1,
+    exp:{ru:'На равнозначных перекрёстках действует правило «помехи справа»: уступить нужно транспорту, приближающемуся с правой стороны.',
+         kk:'Тең маңызды қиылыстарда «оң жақ кедергісі» ережесі қолданылады: оң жақтан келе жатқан көлікке жол беру керек.',
+         en:'At equal intersections the "yield to the right" rule applies: give way to traffic approaching from your right.'}
+  },
+  {
+    q:{ru:'Какая максимальная скорость разрешена в населённых пунктах, если знаки не указывают иное?',
+       kk:'Жол белгілерінде басқаша көрсетілмесе, елді мекендерде рұқсат етілген ең жоғары жылдамдық қандай?',
+       en:'Unless road signs state otherwise, what is the default speed limit inside populated areas?'},
+    opts:{ru:['50 км/ч','60 км/ч','70 км/ч','90 км/ч'],
+          kk:['50 км/сағ','60 км/сағ','70 км/сағ','90 км/сағ'],
+          en:['50 km/h','60 km/h','70 km/h','90 km/h']},
+    correct:1,
+    exp:{ru:'В населённых пунктах базовое ограничение — 60 км/ч, если другое значение не установлено дорожными знаками.',
+         kk:'Елді мекендерде негізгі шектеу — сағатына 60 км, егер жол белгілерімен өзгеше мән белгіленбесе.',
+         en:'The default limit inside populated areas is 60 km/h unless a sign specifies a different value.'}
+  },
+  {
+    q:{ru:'Ремень безопасности во время движения обязаны пристёгивать:',
+       kk:'Жүріс кезінде қауіпсіздік белдігін кімдер тағуға міндетті?',
+       en:'Who is required to wear a seatbelt while the vehicle is moving?'},
+    opts:{ru:['Только водитель','Только пассажиры передних сидений','Водитель и все пассажиры на всех местах','Только пассажиры с детьми'],
+          kk:['Тек жүргізуші','Тек алдыңғы орындықтағы жолаушылар','Жүргізуші және барлық орындықтардағы жолаушылар','Тек балалары бар жолаушылар'],
+          en:['Only the driver','Only front-seat passengers','The driver and passengers in every seat','Only passengers travelling with children']},
+    correct:2,
+    exp:{ru:'Правила обязывают пристёгиваться ремнём безопасности водителя и пассажиров на всех сиденьях, включая задние.',
+         kk:'Ережелер бойынша жүргізуші және барлық орындықтардағы (соның ішінде артқы) жолаушылар қауіпсіздік белдігін тағуға міндетті.',
+         en:'Seatbelts are required for the driver and passengers in every seat, including the back.'}
+  },
+  {
+    q:{ru:'Вы приближаетесь к нерегулируемому пешеходному переходу, и пешеход уже вышел на проезжую часть. Ваши действия:',
+       kk:'Реттелмейтін жаяу жүргіншілер өткелінде жаяу жүргінші жол жолағына шыққанда, сіздің әрекетіңіз қандай болуы керек?',
+       en:"You're approaching an unmarked pedestrian crossing and a pedestrian has already stepped onto the road. What should you do?"},
+    opts:{ru:['Проехать первым, если пешеход ещё далеко от вашей полосы','Снизить скорость и, при необходимости, остановиться, пропустив пешехода','Посигналить и продолжить движение','Объехать пешехода по встречной полосе'],
+          kk:['Жаяу жүргінші жолағыма әлі жетпеген болса, бірінші өтемін','Жылдамдықты азайтып, қажет болса тоқтап, жаяу жүргіншіні өткіземін','Дабыл беремін де жүре беремін','Жаяу жүргіншіні қарсы жолақпен айналып өтемін'],
+          en:['Go first if the pedestrian is still far from your lane','Slow down and stop if needed to let the pedestrian cross','Sound the horn and keep driving','Drive around the pedestrian using the oncoming lane']},
+    correct:1,
+    exp:{ru:'На нерегулируемом переходе водитель обязан уступить дорогу пешеходу, который уже начал переход или собирается перейти проезжую часть.',
+         kk:'Реттелмейтін өткелде жүргізуші жол жолағына шыққан немесе шығайын деп тұрған жаяу жүргіншіге жол беруге міндетті.',
+         en:'At an unmarked crossing, drivers must give way to a pedestrian who has stepped onto or is about to step onto the road.'}
+  },
+  {
+    q:{ru:'Когда нужно включать указатель поворота перед манёвром?',
+       kk:'Маневр алдында бұрылу көрсеткішін қашан қосу керек?',
+       en:'When should you switch on your turn signal before a maneuver?'},
+    opts:{ru:['Одновременно с началом манёвра','Заранее, до начала манёвра','Сразу после завершения манёвра','Включать не обязательно, если дорога пустая'],
+          kk:['Маневрмен бір мезгілде','Маневр басталғанға дейін алдын ала','Маневр аяқталғаннан кейін бірден','Жол бос болса, қосудың қажеті жоқ'],
+          en:['At the same moment as the maneuver','In advance, before starting the maneuver','Right after finishing the maneuver',"It's optional if the road is empty"]},
+    correct:1,
+    exp:{ru:'Сигнал поворота подаётся заблаговременно — до начала перестроения или поворота, чтобы предупредить других участников движения.',
+         kk:'Бұрылу сигналы басқа жол қатысушыларын ескерту үшін маневр басталғанға дейін алдын ала қосылуы керек.',
+         en:'Turn signals must be switched on in advance, before you start turning or changing lanes, to warn other road users.'}
+  }
+];
 
-        // Header scroll effect
-        let lastScroll = 0;
-        const header = document.getElementById('header');
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-            
-            lastScroll = currentScroll;
-        });
+/* ============================================================
+   4. ДАННЫЕ: FAQ
+   ============================================================ */
+const FAQ = [
+  { q:{ru:'Сколько длится обучение?',kk:'Оқыту қанша уақытқа созылады?',en:'How long does the course take?'},
+    a:{ru:'В среднем от полутора до двух месяцев — зависит от выбранного пакета, расписания групп и того, как быстро вы сдадите тесты спецзоны.',
+       kk:'Орташа алғанда бір жарым-екі ай — таңдалған пакетке, топ кестесіне және арнайы аймақ тесттерін қаншалықты тез тапсыруыңызға байланысты.',
+       en:'On average one and a half to two months, depending on the package you choose, the group schedule, and how quickly you pass the official test questions.'} },
+  { q:{ru:'Что входит в стоимость пакета?',kk:'Пакет құнына не кіреді?',en:"What's included in the package price?"},
+    a:{ru:'Уроки теории, тесты спецзоны, вождение (количество занятий зависит от пакета), медицинская справка и курс первой помощи. Скрытых доплат нет.',
+       kk:'Теория сабақтары, арнайы аймақ тесттері, жүргізу сабақтары (саны пакетке байланысты), медициналық анықтама және алғашқы көмек курсы. Жасырын төлемдер жоқ.',
+       en:"Theory lessons, official test questions, driving lessons (the number depends on the package), a medical certificate, and a first-aid course. There are no hidden fees."} },
+  { q:{ru:'Можно ли оплатить обучение в рассрочку?',kk:'Оқуды бөліп төлеуге бола ма?',en:'Can I pay for the course in installments?'},
+    a:{ru:'Да, доступна рассрочка 0% помесячно — сумма ежемесячного платежа указана в описании каждого пакета.',
+       kk:'Иә, айына 0% мөлшерлемемен бөліп төлеу қолжетімді — ай сайынғы төлем сомасы әр пакеттің сипаттамасында көрсетілген.',
+       en:'Yes, 0% monthly installments are available — the monthly payment for each package is listed in its description.'} },
+  { q:{ru:'Как записаться на бесплатное пробное занятие?',kk:'Тегін сынақ сабаққа қалай жазылуға болады?',en:'How do I sign up for a free trial lesson?'},
+    a:{ru:'Заполните форму на сайте или напишите нам в WhatsApp — перезвоним в течение 15 минут и подберём удобную группу.',
+       kk:'Сайттағы форманы толтырыңыз немесе бізге WhatsApp-қа жазыңыз — 15 минут ішінде қоңырау шалып, қолайлы топты таңдап береміз.',
+       en:"Fill in the form on the site or message us on WhatsApp — we'll call you back within 15 minutes and help you pick a convenient group."} },
+  { q:{ru:'Можно ли поменять инструктора, если не подошёл?',kk:'Нұсқаушы ұнамаса, ауыстыруға бола ма?',en:"Can I change my instructor if it's not a good fit?"},
+    a:{ru:'Да, меняем инструктора без вопросов и без дополнительной оплаты — важно, чтобы вам было комфортно учиться.',
+       kk:'Иә, нұсқаушыны сұраусыз және қосымша төлемсіз ауыстырамыз — сізге оқу ыңғайлы болуы маңызды.',
+       en:"Yes, we'll switch instructors with no questions asked and no extra charge — it matters that you feel comfortable learning."} },
+  { q:{ru:'В каких городах есть филиалы?',kk:'Филиалдар қай қалаларда орналасқан?',en:'Which cities have branches?'},
+    a:{ru:'Четыре филиала в Алматы и один в Талдыкоргане — всего пять точек, выбирайте ближайшую при записи.',
+       kk:'Алматыда төрт филиал және Талдықорғанда бір филиал — барлығы бес нүкте, жазылу кезінде ең жақынын таңдаңыз.',
+       en:'Four branches in Almaty and one in Taldykorgan — five locations in total, so pick whichever is closest when you sign up.'} }
+];
 
-        // Mobile menu toggle
-        function toggleMenu() {
-            document.getElementById('navLinks').classList.toggle('active');
-        }
+/* ============================================================
+   5. СЛОВАРЬ ПЕРЕВОДОВ
+   ============================================================ */
+const T = {
+ru:{
+ 'nav.about':'Преимущества','nav.packages':'Пакеты','nav.process':'Как проходит','nav.reels':'Видео',
+ 'nav.test':'Тест ПДД','nav.branches':'Филиалы','nav.faq':'Вопросы','nav.cta':'Записаться',
+ 'hero.badge':'5 филиалов — Алматы и Талдыкорган','hero.t1':'Права категории B','hero.t2':'без пересдач',
+ 'hero.sub':'Теория, ПДД-тесты спецзоны, вождение по городу и автодрому, медсправка и первая помощь — всё в одном пакете. Группы утром, днём и вечером.',
+ 'hero.cta1':'Смотреть пакеты','hero.cta2':'Пройти тест ПДД',
+ 'hero.note':'Рассрочка 0% · Документы за один визит · Официальный договор',
+ 'stat.branches':'филиалов','stat.pass':'сдают с первого раза','stat.years':'лет на рынке',
+ 'form.title':'Запись на бесплатное занятие','form.sub':'Перезвоним в течение 15 минут и подберём группу',
+ 'form.name':'Имя','form.namePh':'Ваше имя','form.phone':'Телефон','form.branch':'Филиал','form.pkg':'Пакет',
+ 'form.send':'Отправить в WhatsApp','form.consent':'Нажимая кнопку, вы соглашаетесь на обработку персональных данных',
+ 'pk.basic':'Базовый — 120 000 ₸','pk.comfort':'Комфорт — 150 000 ₸','pk.pro':'Про — 200 000 ₸',
+ 'adv.badge':'Почему мы','adv.title':'Обучение, после которого действительно ездят',
+ 'adv.sub':'Мы убрали всё лишнее и оставили то, что даёт результат на экзамене и на дороге.',
+ 'adv.1t':'Вождение с первой недели','adv.1d':'Не ждёте окончания теории — практика начинается параллельно, на автодроме и в городе.',
+ 'adv.2t':'Тесты спецзоны','adv.2d':'Готовим по актуальной базе вопросов спецзоны — те же билеты, что и на реальном экзамене.',
+ 'adv.3t':'Инструктор под вас','adv.3d':'Выбираете инструктора и удобное время. Не подошёл — меняем без вопросов и доплат.',
+ 'adv.4t':'Всё включено','adv.4d':'Медсправка, курс первой помощи и учебники входят в стоимость. Скрытых платежей нет.',
+ 'adv.5t':'Гибкий график','adv.5d':'Утренние, дневные и вечерние группы, занятия по выходным — совмещайте с работой и учёбой.',
+ 'adv.6t':'Сопровождение до прав','adv.6d':'Записываем на экзамен, объясняем порядок сдачи и остаёмся на связи до получения удостоверения.',
+ 'pkg.badge':'Стоимость','pkg.title':'Три пакета обучения',
+ 'pkg.sub':'Категория B. Отличаются количеством практических занятий — теория и документы одинаковые везде.',
+ 'pkg.b.name':'Базовый','pkg.b.sub':'Для тех, кто уже немного за рулём','pkg.b.pay':'или 10 000 ₸ / мес в рассрочку',
+ 'pkg.c.name':'Комфорт','pkg.c.sub':'Оптимальный баланс часов и цены','pkg.c.pay':'или 12 500 ₸ / мес в рассрочку',
+ 'pkg.p.name':'Про','pkg.p.sub':'Максимум практики с нуля','pkg.p.pay':'или 16 600 ₸ / мес в рассрочку',
+ 'pkg.popular':'Выбирают чаще','pkg.choose':'Выбрать пакет',
+ 'f.theory':'Уроки теории','f.book1':'Книга теории ПДД','f.book2':'Книги ПДД','f.tests':'ПДД-тесты спецзоны',
+ 'f.drive5':'Вождение — 5 уроков','f.drive10':'Вождение — 10 уроков: город и автодром','f.drive15':'Вождение — 15 уроков: город и автодром',
+ 'f.med':'Медицинская справка','f.aid':'Первая медицинская помощь',
+ 'proc.badge':'Процесс','proc.title':'Путь от заявки до удостоверения','proc.sub':'Обычно занимает от полутора до двух месяцев.',
+ 'proc.1t':'Заявка и договор','proc.1d':'Оставляете заявку, выбираете филиал и пакет. Подписываем договор, фиксируем стоимость.',
+ 'proc.2t':'Теория и тесты','proc.2d':'Занятия в классе плюс доступ к тестам спецзоны — решаете билеты между уроками.',
+ 'proc.3t':'Практика','proc.3d':'Автодром и маршруты города с инструктором. Отрабатываем упражнения экзамена.',
+ 'proc.4t':'Документы','proc.4d':'Медсправка и курс первой помощи — оформляем сами, без беготни по клиникам.',
+ 'proc.5t':'Экзамен','proc.5d':'Записываем на сдачу, подсказываем порядок и сопровождаем до получения прав.',
+ 'reels.badge':'Видео','reels.title':'Как у нас проходит обучение',
+ 'reels.sub':'Короткие ролики с занятий, автодрома и экзаменов — свайпайте влево и вправо.',
+ 'reels.hint':'Свайпните ленту или используйте стрелки',
+ 'quiz.badge':'Бесплатно','quiz.title':'Мини-тест по ПДД',
+ 'quiz.sub':'Пять вопросов из базы спецзоны — проверьте, насколько вы готовы к экзамену.',
+ 'quiz.next':'Следующий вопрос','quiz.again':'Пройти заново','quiz.toPkg':'Выбрать пакет обучения',
+ 'quiz.toResult':'Показать результат',
+ 'quiz.vHigh':'Отличный результат! Вы явно готовы к спецзоне — приходите на пробное занятие, закрепим на практике.',
+ 'quiz.vMid':'Неплохо, но пару правил стоит повторить. Наши преподаватели разберут именно ваши пробелы.',
+ 'quiz.vLow':'Есть, над чем поработать — и это нормально в начале пути. Приходите на теорию, начнём с азов.',
+ 'br.badge':'Адреса','br.title':'Пять филиалов на карте',
+ 'br.sub':'Выберите удобный филиал — карта покажет точное расположение и построит маршрут.',
+ 'faq.badge':'Вопросы','faq.title':'Частые вопросы',
+ 'cta.title':'Напишите нам — ответим за пару минут','cta.sub':'Подскажем, какой пакет подойдёт именно вам, и запишем в ближайшую группу.',
+ 'ftr.about':'Автошкола категории B в Алматы и Талдыкоргане. Теория, практика и документы — в одном месте.',
+ 'ftr.nav':'Разделы','ftr.soc':'Соцсети','ftr.contacts':'Контакты',
+ 'ftr.hours':'Пн–Вс: 09:00 – 20:00','ftr.cities':'Алматы · Талдыкорган','ftr.rights':'Все права защищены',
+ 'wa.tip':'Написать в WhatsApp','lb.full':'Смотреть полностью'
+},
+kk:{
+ 'nav.about':'Артықшылықтар','nav.packages':'Пакеттер','nav.process':'Қалай өтеді','nav.reels':'Видео',
+ 'nav.test':'ПДД тесті','nav.branches':'Филиалдар','nav.faq':'Сұрақтар','nav.cta':'Жазылу',
+ 'hero.badge':'5 филиал — Алматы және Талдықорған','hero.t1':'B санатты куәлік','hero.t2':'қайта тапсырусыз',
+ 'hero.sub':'Теория, арнайы аймақ ПДД тесттері, қала мен автодромда жүргізу, медициналық анықтама және алғашқы көмек — барлығы бір пакетте. Топтар таңертең, күндіз және кешке.',
+ 'hero.cta1':'Пакеттерді көру','hero.cta2':'ПДД тестін тапсыру',
+ 'hero.note':'0% бөліп төлеу · Құжаттар бір келуде · Ресми шарт',
+ 'stat.branches':'филиал','stat.pass':'бірінші реттен тапсырады','stat.years':'нарықта жыл',
+ 'form.title':'Тегін сабаққа жазылу','form.sub':'15 минут ішінде қоңырау шалып, топты таңдап береміз',
+ 'form.name':'Аты-жөні','form.namePh':'Атыңыз','form.phone':'Телефон','form.branch':'Филиал','form.pkg':'Пакет',
+ 'form.send':'WhatsApp-қа жіберу','form.consent':'Батырманы басу арқылы сіз дербес деректерді өңдеуге келісесіз',
+ 'pk.basic':'Базалық — 120 000 ₸','pk.comfort':'Комфорт — 150 000 ₸','pk.pro':'Про — 200 000 ₸',
+ 'adv.badge':'Неге біз','adv.title':'Шынымен жүргізуге үйрететін оқыту',
+ 'adv.sub':'Артықты алып тастап, тек емтихан мен жолда нәтиже беретінін қалдырдық.',
+ 'adv.1t':'Бірінші аптадан жүргізу','adv.1d':'Теорияның аяқталуын күтпейсіз — тәжірибе автодромда және қалада қатар басталады.',
+ 'adv.2t':'Арнайы аймақ тесттері','adv.2d':'Арнайы аймақтың өзекті сұрақтар базасы бойынша дайындаймыз — нақты емтихандағыдай билеттер.',
+ 'adv.3t':'Өзіңізге лайық нұсқаушы','adv.3d':'Нұсқаушы мен қолайлы уақытты өзіңіз таңдайсыз. Ұнамаса — сұраусыз және қосымша ақысыз ауыстырамыз.',
+ 'adv.4t':'Барлығы кіреді','adv.4d':'Медициналық анықтама, алғашқы көмек курсы және оқулықтар бағаға кіреді. Жасырын төлемдер жоқ.',
+ 'adv.5t':'Икемді кесте','adv.5d':'Таңертеңгі, күндізгі және кешкі топтар, демалыс күндері сабақ — жұмыс пен оқуға сыйдырыңыз.',
+ 'adv.6t':'Куәлік алғанға дейін қолдау','adv.6d':'Емтиханға жазамыз, тапсыру тәртібін түсіндіреміз және куәлік алғанға дейін байланыста боламыз.',
+ 'pkg.badge':'Құны','pkg.title':'Оқытудың үш пакеті',
+ 'pkg.sub':'B санаты. Тәжірибелік сабақтар саны бойынша ерекшеленеді — теория мен құжаттар барлығында бірдей.',
+ 'pkg.b.name':'Базалық','pkg.b.sub':'Аздап рульде отырғандарға арналған','pkg.b.pay':'немесе айына 10 000 ₸ бөліп төлеу',
+ 'pkg.c.name':'Комфорт','pkg.c.sub':'Сағат пен баға арасындағы оңтайлы балансы','pkg.c.pay':'немесе айына 12 500 ₸ бөліп төлеу',
+ 'pkg.p.name':'Про','pkg.p.sub':'Нөлден бастап барынша көп тәжірибе','pkg.p.pay':'немесе айына 16 600 ₸ бөліп төлеу',
+ 'pkg.popular':'Жиі таңдайды','pkg.choose':'Пакетті таңдау',
+ 'f.theory':'Теория сабақтары','f.book1':'ПДД теория кітабы','f.book2':'ПДД кітаптары','f.tests':'Арнайы аймақ ПДД тесттері',
+ 'f.drive5':'Жүргізу — 5 сабақ','f.drive10':'Жүргізу — 10 сабақ: қала және автодром','f.drive15':'Жүргізу — 15 сабақ: қала және автодром',
+ 'f.med':'Медициналық анықтама','f.aid':'Алғашқы медициналық көмек',
+ 'proc.badge':'Процесс','proc.title':'Өтініштен куәлікке дейінгі жол','proc.sub':'Әдетте бір жарым-екі айды алады.',
+ 'proc.1t':'Өтініш және шарт','proc.1d':'Өтінім қалдырасыз, филиал мен пакетті таңдайсыз. Шартқа қол қоямыз, құнын бекітеміз.',
+ 'proc.2t':'Теория және тесттер','proc.2d':'Сыныптағы сабақтар плюс арнайы аймақ тесттеріне қолжетімділік — сабақ аралығында билеттерді шешесіз.',
+ 'proc.3t':'Тәжірибе','proc.3d':'Нұсқаушымен автодром және қала бағыттары. Емтихан жаттығуларын өтеміз.',
+ 'proc.4t':'Құжаттар','proc.4d':'Медициналық анықтама мен алғашқы көмек курсын өзіміз рәсімдейміз, емханаларды аралаудың қажеті жоқ.',
+ 'proc.5t':'Емтихан','proc.5d':'Тапсыруға жазамыз, тәртібін түсіндіреміз және куәлік алғанға дейін қолдаймыз.',
+ 'reels.badge':'Видео','reels.title':'Оқыту бізде қалай өтеді',
+ 'reels.sub':'Сабақтардан, автодром мен емтихандардан қысқа роликтер — солға және оңға сырғытыңыз.',
+ 'reels.hint':'Лентаны сырғытыңыз немесе көрсеткілерді пайдаланыңыз',
+ 'quiz.badge':'Тегін','quiz.title':'ПДД бойынша мини-тест',
+ 'quiz.sub':'Арнайы аймақ базасынан бес сұрақ — емтиханға қаншалықты дайын екеніңізді тексеріңіз.',
+ 'quiz.next':'Келесі сұрақ','quiz.again':'Қайта тапсыру','quiz.toPkg':'Оқыту пакетін таңдау',
+ 'quiz.toResult':'Нәтижені көру',
+ 'quiz.vHigh':'Тамаша нәтиже! Сіз арнайы аймаққа әбден дайынсыз — тәжірибеде бекіту үшін сынақ сабаққа келіңіз.',
+ 'quiz.vMid':'Жаман емес, бірақ бірнеше ережені қайталаған жөн. Мұғалімдеріміз дәл сіздің олқылықтарыңызды түсіндіреді.',
+ 'quiz.vLow':'Әлі жұмыс істейтін жер бар — жолдың басында бұл қалыпты жағдай. Теориядан бастайық, негізден келіңіз.',
+ 'br.badge':'Мекенжайлар','br.title':'Картадағы бес филиал',
+ 'br.sub':'Қолайлы филиалды таңдаңыз — карта дәл орналасқан жерін көрсетіп, бағыт салады.',
+ 'faq.badge':'Сұрақтар','faq.title':'Жиі қойылатын сұрақтар',
+ 'cta.title':'Бізге жазыңыз — бірнеше минутта жауап береміз','cta.sub':'Қай пакет сізге сай екенін айтып, ең жақын топқа жазамыз.',
+ 'ftr.about':'Алматы мен Талдықорғандағы B санатты автошкола. Теория, тәжірибе және құжаттар — бір жерде.',
+ 'ftr.nav':'Бөлімдер','ftr.soc':'Әлеуметтік желілер','ftr.contacts':'Байланыс',
+ 'ftr.hours':'Дс–Жс: 09:00 – 20:00','ftr.cities':'Алматы · Талдықорған','ftr.rights':'Барлық құқықтар қорғалған',
+ 'wa.tip':'WhatsApp-қа жазу','lb.full':'Толық нұсқасын көру'
+},
+en:{
+ 'nav.about':'Advantages','nav.packages':'Packages','nav.process':'How it works','nav.reels':'Videos',
+ 'nav.test':'Rules quiz','nav.branches':'Branches','nav.faq':'FAQ','nav.cta':'Sign up',
+ 'hero.badge':'5 branches — Almaty & Taldykorgan','hero.t1':'Category B licence','hero.t2':'without retakes',
+ 'hero.sub':'Theory, official test questions, city and training-ground driving, medical certificate and first aid — all in one package. Morning, afternoon and evening groups.',
+ 'hero.cta1':'See packages','hero.cta2':'Take the rules quiz',
+ 'hero.note':'0% installments · Paperwork in one visit · Official contract',
+ 'stat.branches':'branches','stat.pass':'pass on the first try','stat.years':'years in business',
+ 'form.title':'Book a free trial lesson','form.sub':"We'll call you back within 15 minutes and match you to a group",
+ 'form.name':'Name','form.namePh':'Your name','form.phone':'Phone','form.branch':'Branch','form.pkg':'Package',
+ 'form.send':'Send via WhatsApp','form.consent':'By clicking the button you agree to the processing of your personal data',
+ 'pk.basic':'Basic — ₸120,000','pk.comfort':'Comfort — ₸150,000','pk.pro':'Pro — ₸200,000',
+ 'adv.badge':'Why us','adv.title':'Training that actually gets you driving',
+ 'adv.sub':"We cut everything unnecessary and kept only what gets results on the exam and on the road.",
+ 'adv.1t':'Driving from week one','adv.1d':"You don't wait for theory to finish — practice starts in parallel, on the training ground and in the city.",
+ 'adv.2t':'Official test questions','adv.2d':'We train on the current official question bank — the same questions used on the real exam.',
+ 'adv.3t':'An instructor that fits you','adv.3d':"Choose your instructor and a convenient time. Not a good fit? We'll switch, no questions, no extra charge.",
+ 'adv.4t':'Everything included','adv.4d':'Medical certificate, first-aid course and textbooks are included in the price. No hidden fees.',
+ 'adv.5t':'Flexible schedule','adv.5d':'Morning, afternoon and evening groups, plus weekend lessons — fit it around work and study.',
+ 'adv.6t':'Support all the way to your licence','adv.6d':'We book your exam, explain how it works, and stay in touch until you have your licence in hand.',
+ 'pkg.badge':'Pricing','pkg.title':'Three training packages',
+ 'pkg.sub':'Category B. Packages differ in the number of practical lessons — theory and paperwork are the same in every package.',
+ 'pkg.b.name':'Basic','pkg.b.sub':'For those already somewhat comfortable driving','pkg.b.pay':'or ₸10,000/mo in installments',
+ 'pkg.c.name':'Comfort','pkg.c.sub':'The best balance of hours and price','pkg.c.pay':'or ₸12,500/mo in installments',
+ 'pkg.p.name':'Pro','pkg.p.sub':'Maximum practice starting from zero','pkg.p.pay':'or ₸16,600/mo in installments',
+ 'pkg.popular':'Most popular','pkg.choose':'Choose this package',
+ 'f.theory':'Theory lessons','f.book1':'Highway code textbook','f.book2':'Highway code textbooks','f.tests':'Official test questions',
+ 'f.drive5':'Driving — 5 lessons','f.drive10':'Driving — 10 lessons: city and training ground','f.drive15':'Driving — 15 lessons: city and training ground',
+ 'f.med':'Medical certificate','f.aid':'First-aid course',
+ 'proc.badge':'Process','proc.title':'From application to licence','proc.sub':'Usually takes one and a half to two months.',
+ 'proc.1t':'Application and contract','proc.1d':'You submit an application and choose a branch and package. We sign the contract and lock in the price.',
+ 'proc.2t':'Theory and tests','proc.2d':'Classroom lessons plus access to the official test questions — you work through them between classes.',
+ 'proc.3t':'Practice','proc.3d':'Training ground and city routes with an instructor. We drill the exam exercises.',
+ 'proc.4t':'Paperwork','proc.4d':'We arrange the medical certificate and first-aid course ourselves — no running between clinics.',
+ 'proc.5t':'Exam','proc.5d':'We book your exam, explain the process, and support you until you get your licence.',
+ 'reels.badge':'Videos','reels.title':'What our training looks like',
+ 'reels.sub':'Short clips from lessons, the training ground and exams — swipe left and right.',
+ 'reels.hint':'Swipe the strip or use the arrows',
+ 'quiz.badge':'Free','quiz.title':'Quick highway-code quiz',
+ 'quiz.sub':'Five questions from the official bank — check how ready you are for the exam.',
+ 'quiz.next':'Next question','quiz.again':'Retake the quiz','quiz.toPkg':'Choose a training package',
+ 'quiz.toResult':'See result',
+ 'quiz.vHigh':"Great result! You're clearly ready for the official test — come to a trial lesson and put it into practice.",
+ 'quiz.vMid':'Not bad, but a few rules are worth revisiting. Our instructors will work through exactly your gaps.',
+ 'quiz.vLow':"There's room to grow, and that's completely normal at the start. Come to a theory class and we'll begin from the basics.",
+ 'br.badge':'Addresses','br.title':'Five branches on the map',
+ 'br.sub':"Pick a convenient branch — the map will show its exact location and build a route.",
+ 'faq.badge':'FAQ','faq.title':'Frequently asked questions',
+ 'cta.title':"Message us — we'll reply within a couple of minutes",'cta.sub':"We'll help you pick the right package and book you into the nearest group.",
+ 'ftr.about':'A category B driving school in Almaty and Taldykorgan. Theory, practice and paperwork — all in one place.',
+ 'ftr.nav':'Sections','ftr.soc':'Social media','ftr.contacts':'Contacts',
+ 'ftr.hours':'Mon–Sun: 09:00 – 20:00','ftr.cities':'Almaty · Taldykorgan','ftr.rights':'All rights reserved',
+ 'wa.tip':'Message us on WhatsApp','lb.full':'Watch full video'
+}
+};
 
-        // Intersection Observer for animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+/* ============================================================
+   6. УТИЛИТЫ И СОСТОЯНИЕ
+   ============================================================ */
+(function(){
+  const $=(s,c=document)=>c.querySelector(s);
+  const $$=(s,c=document)=>[...c.querySelectorAll(s)];
+  const root=document.documentElement;
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+  function readStore(k,fallback){
+    try{ const v=localStorage.getItem(k); return v||fallback; }catch(e){ return fallback; }
+  }
+  function writeStore(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
-        // Observe all animated elements
-        document.querySelectorAll('.animate-on-scroll, .package-card, .video-card, .location-card, .feature-card').forEach(el => {
-            observer.observe(el);
-        });
+  let lang = readStore('za_lang','ru');
+  if(!T[lang]) lang='ru';
+  let theme = readStore('za_theme','light');
+  root.setAttribute('data-theme', theme);
 
-        // Add stagger delay to grid items
-        document.querySelectorAll('.packages-grid .package-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+  /* ---------- ТЕМА ---------- */
+  const themeBtn=$('#themeBtn');
+  themeBtn.addEventListener('click',()=>{
+    theme = theme==='vivid' ? 'light' : 'vivid';
+    root.setAttribute('data-theme', theme);
+    writeStore('za_theme', theme);
+  });
 
-        document.querySelectorAll('.features-grid .feature-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+  /* ---------- ШАПКА ПРИ СКРОЛЛЕ ---------- */
+  const hdr=$('#hdr');
+  const onScroll=()=>hdr.classList.toggle('stuck', window.scrollY>10);
+  document.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
 
-        document.querySelectorAll('.locations-grid .location-card').forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
+  /* ---------- МОБИЛЬНОЕ МЕНЮ ---------- */
+  const burger=$('#burger'), menu=$('#menu');
+  burger.addEventListener('click',()=>{
+    burger.classList.toggle('on');
+    menu.classList.toggle('open');
+  });
+  $$('#menu a').forEach(a=>a.addEventListener('click',()=>{
+    burger.classList.remove('on'); menu.classList.remove('open');
+  }));
 
-        // Parallax effect for hero
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero-content');
-            if (hero && scrolled < window.innerHeight) {
-                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
-                hero.style.opacity = 1 - (scrolled / 800);
-            }
-        });
+  /* ---------- ГОД В ПОДВАЛЕ ---------- */
+  $('#year').textContent = new Date().getFullYear();
 
-        // Update video iframes with actual video IDs when available
-        // Replace the placeholder YouTube video IDs with actual ones
-        // Example: https://www.youtube.com/embed/YOUR_VIDEO_ID
-    </script>
+  /* ---------- ПОЯВЛЕНИЕ ПРИ СКРОЛЛЕ ---------- */
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.14});
+  function observeReveals(){ $$('.rv').forEach(el=>io.observe(el)); }
+
+  /* ---------- ФОРМА ЗАПИСИ -> WHATSAPP ---------- */
+  const leadForm=$('#leadForm');
+  leadForm.addEventListener('submit', e=>{
+    e.preventDefault();
+    const name=$('#fName').value.trim();
+    const phone=$('#fPhone').value.trim();
+    const branch=$('#fBranch').value;
+    const pkg=$('#fPkg').value;
+    const msgLines = {
+      ru:`Здравствуйте! Хочу записаться в Zarul Auto.\nИмя: ${name}\nТелефон: ${phone}\nФилиал: ${branch}\nПакет: ${pkg}`,
+      kk:`Сәлеметсіз бе! Zarul Auto-ға жазылғым келеді.\nАты-жөні: ${name}\nТелефон: ${phone}\nФилиал: ${branch}\nПакет: ${pkg}`,
+      en:`Hello! I'd like to sign up at Zarul Auto.\nName: ${name}\nPhone: ${phone}\nBranch: ${branch}\nPackage: ${pkg}`
+    };
+    const text=encodeURIComponent(msgLines[lang]||msgLines.ru);
+    window.open(`https://wa.me/77755342221?text=${text}`,'_blank','noopener');
+  });
+
+  /* ---------- КНОПКИ ПАКЕТОВ ---------- */
+  const pkgMap={basic:0,comfort:1,pro:2};
+  $$('.pk-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      $('#fPkg').selectedIndex = pkgMap[btn.dataset.pkg] ?? 0;
+      $('.hero-card').scrollIntoView({behavior:'smooth', block:'center'});
+      setTimeout(()=>$('#fName').focus({preventScroll:true}), 420);
+    });
+  });
+
+  /* ---------- ФИЛИАЛЫ ---------- */
+  let activeBranch=0;
+  function renderBranches(){
+    const list=$('#branchList'); list.innerHTML='';
+    const sel=$('#fBranch'); sel.innerHTML='';
+    BRANCHES.forEach((b,i)=>{
+      const btn=document.createElement('button');
+      btn.type='button';
+      btn.className='branch'+(i===activeBranch?' on':'');
+      btn.innerHTML=`<span class="branch-pin">${i+1}</span><span><b>${b.city[lang]}</b><span>${b.addr[lang]}</span></span>`;
+      btn.addEventListener('click',()=>{ activeBranch=i; renderBranches(); updateMap(); });
+      list.appendChild(btn);
+
+      const opt=document.createElement('option');
+      opt.textContent=`${b.addr[lang]} — ${b.city[lang]}`;
+      sel.appendChild(opt);
+    });
+    sel.selectedIndex=activeBranch;
+  }
+  function updateMap(){
+    const b=BRANCHES[activeBranch];
+    $('#ymap').src = `https://yandex.kz/map-widget/v1/?text=${encodeURIComponent(b.q)}&z=17`;
+  }
+
+  /* ---------- REELS ---------- */
+  function renderReels(){
+    const track=$('#reelsTrack'); track.innerHTML='';
+    REELS.forEach((r,i)=>{
+      const div=document.createElement('div');
+      div.className='reel';
+      div.innerHTML=`
+        <video src="${r.src}" muted loop playsinline preload="metadata"></video>
+        <span class="reel-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+        <div class="reel-meta"><b>${r.t[lang]}</b><span>${r.s[lang]}</span></div>`;
+      div.addEventListener('click', ()=>openLightbox(i));
+      track.appendChild(div);
+    });
+  }
+  $('#rPrev').addEventListener('click',()=>scrollReels(-1));
+  $('#rNext').addEventListener('click',()=>scrollReels(1));
+  function scrollReels(dir){
+    const track=$('#reelsTrack');
+    const card=track.querySelector('.reel');
+    const w = card ? card.getBoundingClientRect().width+16 : 260;
+    track.scrollBy({left:dir*w*2, behavior:'smooth'});
+  }
+  (function enableDrag(){
+    const track=$('#reelsTrack');
+    let down=false,startX=0,startScroll=0;
+    track.addEventListener('mousedown', e=>{
+      down=true; track.classList.add('drag');
+      startX=e.pageX-track.offsetLeft; startScroll=track.scrollLeft;
+    });
+    ['mouseleave','mouseup'].forEach(ev=>track.addEventListener(ev,()=>{down=false;track.classList.remove('drag');}));
+    track.addEventListener('mousemove', e=>{
+      if(!down) return; e.preventDefault();
+      const x=e.pageX-track.offsetLeft;
+      track.scrollLeft = startScroll-(x-startX);
+    });
+  })();
+
+  /* ---------- ЛАЙТБОКС ---------- */
+  const lb=$('#lb'), lbStage=$('#lbStage');
+  let lbIndex=0;
+  function openLightbox(i){
+    lbIndex=i; renderLbStage(); lb.classList.add('on'); document.body.style.overflow='hidden';
+  }
+  function renderLbStage(){
+    const r=REELS[lbIndex];
+    lbStage.innerHTML=`<video src="${r.src}" autoplay loop muted playsinline controls></video>
+      <a class="btn btn-primary btn-sm lb-link" href="${r.link}" target="_blank" rel="noopener">${(T[lang]&&T[lang]['lb.full'])||'Смотреть полностью'}</a>`;
+  }
+  function closeLightbox(){ lb.classList.remove('on'); document.body.style.overflow=''; lbStage.innerHTML=''; }
+  $('#lbClose').addEventListener('click', closeLightbox);
+  lb.addEventListener('click', e=>{ if(e.target===lb) closeLightbox(); });
+  $('#lbPrev').addEventListener('click', ()=>{ lbIndex=(lbIndex-1+REELS.length)%REELS.length; renderLbStage(); });
+  $('#lbNext').addEventListener('click', ()=>{ lbIndex=(lbIndex+1)%REELS.length; renderLbStage(); });
+  document.addEventListener('keydown', e=>{
+    if(!lb.classList.contains('on')) return;
+    if(e.key==='Escape') closeLightbox();
+    if(e.key==='ArrowLeft') $('#lbPrev').click();
+    if(e.key==='ArrowRight') $('#lbNext').click();
+  });
+
+  /* ---------- ТЕСТ ПДД ---------- */
+  let qIndex=0, qScore=0, qLocked=false;
+  function startQuiz(){
+    qIndex=0; qScore=0;
+    $('#quizRes').classList.remove('on');
+    $('#quizPlay').style.display='';
+    renderQuizQuestion();
+  }
+  function renderQuizQuestion(){
+    qLocked=false;
+    const total=QUIZ.length;
+    const item=QUIZ[qIndex];
+    $('#quizBar').style.width = (qIndex/total*100)+'%';
+    const qLabel = lang==='kk' ? `${qIndex+1}/${total} сұрақ` : lang==='en' ? `Question ${qIndex+1} of ${total}` : `Вопрос ${qIndex+1} из ${total}`;
+    $('#quizStep').textContent = qLabel;
+    $('#quizQ').textContent = item.q[lang];
+    const opts=$('#quizOpts'); opts.innerHTML='';
+    const letters=['A','B','C','D'];
+    item.opts[lang].forEach((optText,i)=>{
+      const b=document.createElement('button');
+      b.type='button'; b.className='opt';
+      b.innerHTML=`<span class="opt-k">${letters[i]||i+1}</span><span>${optText}</span>`;
+      b.addEventListener('click',()=>selectOpt(i));
+      opts.appendChild(b);
+    });
+    $('#quizExp').classList.remove('on'); $('#quizExp').textContent='';
+    $('#quizNext').style.display='none';
+  }
+  function selectOpt(i){
+    if(qLocked) return; qLocked=true;
+    const item=QUIZ[qIndex];
+    const correct=item.correct;
+    $$('#quizOpts .opt').forEach((el,idx)=>{
+      el.classList.add('locked');
+      if(idx===correct) el.classList.add('right');
+      else if(idx===i) el.classList.add('wrong');
+    });
+    if(i===correct) qScore++;
+    const expEl=$('#quizExp'); expEl.textContent=item.exp[lang]; expEl.classList.add('on');
+    const nextBtn=$('#quizNext');
+    nextBtn.style.display='inline-flex';
+    nextBtn.textContent = qIndex===QUIZ.length-1 ? T[lang]['quiz.toResult'] : T[lang]['quiz.next'];
+  }
+  $('#quizNext').addEventListener('click',()=>{
+    if(qIndex<QUIZ.length-1){ qIndex++; renderQuizQuestion(); }
+    else{ finishQuiz(); }
+  });
+  function finishQuiz(){
+    $('#quizBar').style.width='100%';
+    $('#quizPlay').style.display='none';
+    $('#quizRes').classList.add('on');
+    $('#quizScore').textContent=qScore;
+    const key = qScore>=5 ? 'quiz.vHigh' : qScore>=3 ? 'quiz.vMid' : 'quiz.vLow';
+    $('#quizVerdict').textContent = T[lang][key];
+  }
+  $('#quizAgain').addEventListener('click', startQuiz);
+
+  /* ---------- FAQ ---------- */
+  function renderFaq(){
+    const list=$('#faqList'); list.innerHTML='';
+    FAQ.forEach(item=>{
+      const div=document.createElement('div');
+      div.className='fq';
+      div.innerHTML=`<button type="button" class="fq-q" aria-expanded="false"><span>${item.q[lang]}</span><i>+</i></button>
+        <div class="fq-a"><p>${item.a[lang]}</p></div>`;
+      const qBtn=div.querySelector('.fq-q');
+      const aBox=div.querySelector('.fq-a');
+      qBtn.addEventListener('click',()=>{
+        const isOpen=div.classList.contains('on');
+        div.classList.toggle('on');
+        qBtn.setAttribute('aria-expanded', String(!isOpen));
+        aBox.style.maxHeight = !isOpen ? aBox.scrollHeight+'px' : '0px';
+      });
+      list.appendChild(div);
+    });
+  }
+
+  /* ---------- ЯЗЫК ---------- */
+  function applyLang(){
+    root.setAttribute('lang', lang);
+    $$('[data-i]').forEach(el=>{
+      const k=el.getAttribute('data-i');
+      if(T[lang] && T[lang][k]!==undefined) el.textContent = T[lang][k];
+    });
+    $$('[data-ip]').forEach(el=>{
+      const k=el.getAttribute('data-ip');
+      if(T[lang] && T[lang][k]!==undefined) el.setAttribute('placeholder', T[lang][k]);
+    });
+    $$('#lang button').forEach(b=>b.classList.toggle('on', b.dataset.lang===lang));
+    renderBranches();
+    updateMap();
+    renderReels();
+    renderFaq();
+    startQuiz();
+  }
+  $$('#lang button').forEach(b=>b.addEventListener('click',()=>{
+    if(b.dataset.lang===lang) return;
+    lang=b.dataset.lang; writeStore('za_lang',lang); applyLang();
+  }));
+
+  /* ---------- СТАРТ ---------- */
+  applyLang();
+  observeReveals();
+})();
+</script>
 </body>
 </html>
