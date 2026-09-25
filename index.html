@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Автошкола ZARUL AUTO</title>
+    <title>Автошкола ZARUL AUTO | Алматы</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <!-- SheetJS для импорта Excel -->
+    
+    <!-- Подключение Яндекс Карт -->
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU" type="text/javascript"></script>
+    
+    <!-- SheetJS для админ панели -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <!-- Firebase SDK (заглушки для инициализации) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        'zarul-yellow': '#FFD700',
+                        'zarul-yellow': '#FFCC00',
                         'zarul-black': '#111111',
                     }
                 }
@@ -26,9 +25,14 @@
         }
     </script>
     <style>
-        #map { height: 400px; width: 100%; z-index: 10; border-radius: 1rem; }
+        /* Скрытие скроллбара для горизонтальной прокрутки Reels */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        #map { width: 100%; height: 500px; border-radius: 1.5rem; overflow: hidden; }
+        
         .hero-bg {
-            background-image: linear-gradient(rgba(17, 17, 17, 0.8), rgba(17, 17, 17, 0.8)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop');
+            background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.9)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
         }
@@ -37,27 +41,26 @@
 <body class="bg-gray-50 text-gray-800 font-sans">
 
     <!-- Навигация -->
-    <nav class="bg-zarul-black text-white sticky top-0 z-50">
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <!-- Используем загруженный вами логотип -->
-                    <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-zarul-yellow">
+                    <div class="w-14 h-14 rounded-full flex items-center justify-center overflow-hidden border border-gray-200">
                         <img src="IMG_3986.jpg" alt="ZARUL AUTO Logo" class="w-full h-full object-cover">
                     </div>
-                    <span class="font-bold text-2xl tracking-wider">ZARUL <span class="text-zarul-yellow">AUTO</span></span>
+                    <span class="font-bold text-xl tracking-wider text-zarul-black">ZARUL <span class="text-zarul-yellow">AUTO</span></span>
                 </div>
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8">
-                        <a href="#about" class="hover:text-zarul-yellow transition">О нас</a>
-                        <a href="#prices" class="hover:text-zarul-yellow transition">Цены</a>
-                        <a href="#branches" class="hover:text-zarul-yellow transition">Филиалы</a>
-                        <a href="#admin" class="hover:text-zarul-yellow transition text-sm opacity-50">Админ</a>
+                    <div class="flex items-baseline space-x-8">
+                        <a href="#timeline" class="font-medium hover:text-zarul-yellow transition">Обучение</a>
+                        <a href="#prices" class="font-medium hover:text-zarul-yellow transition">Цены</a>
+                        <a href="#reels" class="font-medium hover:text-zarul-yellow transition">Отзывы</a>
+                        <a href="#map-section" class="font-medium hover:text-zarul-yellow transition">Филиалы</a>
                     </div>
                 </div>
                 <div>
-                    <a href="https://wa.me/77001234567" target="_blank" class="bg-zarul-yellow text-zarul-black font-bold py-2 px-6 rounded-full hover:bg-yellow-300 transition shadow-lg">
-                        Написать в WhatsApp
+                    <a href="https://wa.me/77755342221" target="_blank" class="bg-zarul-yellow text-zarul-black font-bold py-2.5 px-6 rounded-full hover:bg-yellow-400 transition">
+                        Связаться
                     </a>
                 </div>
             </div>
@@ -65,134 +68,291 @@
     </nav>
 
     <!-- Главный экран -->
-    <section class="hero-bg text-white py-32 text-center">
+    <section class="hero-bg text-white py-24 md:py-32 text-center">
         <div class="max-w-4xl mx-auto px-4">
-            <h1 class="text-5xl md:text-6xl font-extrabold mb-6 uppercase tracking-tight">
-                Получи права с <span class="text-zarul-yellow">ZARUL AUTO</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 uppercase tracking-tight leading-tight">
+                Получи права быстро и уверенно с <span class="text-zarul-yellow">ZARUL AUTO</span>
             </h1>
-            <p class="text-xl mb-10 text-gray-300">Современный автопарк, опытные инструкторы и удобный график. Обучение вождению в Алматы с гарантией результата!</p>
-            <div class="flex justify-center gap-4">
-                <a href="#prices" class="bg-zarul-yellow text-zarul-black font-bold text-lg py-4 px-10 rounded-full hover:bg-yellow-300 transition shadow-[0_0_15px_rgba(255,215,0,0.5)]">
-                    Выбрать тариф
-                </a>
-            </div>
+            <p class="text-lg md:text-xl mb-10 text-gray-300">Обучение вождению в Алматы. Современный автопарк, опытные инструкторы и удобный график.</p>
+            <a href="#form-section" class="inline-block bg-zarul-yellow text-zarul-black font-bold text-lg py-4 px-10 rounded-full hover:bg-yellow-400 transition transform hover:scale-105">
+                Записаться на обучение
+            </a>
         </div>
     </section>
 
-    <!-- Прайс-лист -->
-    <section id="prices" class="py-20 bg-white">
+    <!-- Сколько времени занимает обучение -->
+    <section id="timeline" class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-12 text-zarul-black">Наши тарифы</h2>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Тариф 1 -->
-                <div class="border border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-zarul-black"></div>
-                    <h3 class="text-2xl font-bold mb-2">Теория (Онлайн)</h3>
-                    <p class="text-gray-500 mb-6">Для тех, кто хочет учиться дома</p>
-                    <div class="text-4xl font-extrabold mb-6">15 000 ₸</div>
-                    <ul class="space-y-3 mb-8 text-gray-700">
-                        <li class="flex items-center gap-2">Полный курс ПДД</li>
-                        <li class="flex items-center gap-2">Доступ 24/7</li>
-                        <li class="flex items-center gap-2">Подготовка к спецЦОНу</li>
-                    </ul>
-                    <a href="https://wa.me/77001234567?text=Хочу%20записаться%20на%20Онлайн%20теорию" target="_blank" class="block text-center border-2 border-zarul-black text-zarul-black font-bold py-3 rounded-xl hover:bg-zarul-black hover:text-white transition">Записаться</a>
-                </div>
-
-                <!-- Тариф 2 -->
-                <div class="border-2 border-zarul-yellow rounded-2xl p-8 shadow-2xl relative transform md:-translate-y-4 bg-zarul-black text-white">
-                    <div class="absolute top-0 right-0 bg-zarul-yellow text-zarul-black text-xs font-bold px-3 py-1 rounded-bl-lg">ХИТ ПРОДАЖ</div>
-                    <h3 class="text-2xl font-bold mb-2 text-zarul-yellow">АКПП (Автомат)</h3>
-                    <p class="text-gray-400 mb-6">Полный курс с вождением</p>
-                    <div class="text-4xl font-extrabold mb-6">55 000 ₸</div>
-                    <ul class="space-y-3 mb-8 text-gray-300">
-                        <li class="flex items-center gap-2">Теория (Офлайн/Онлайн)</li>
-                        <li class="flex items-center gap-2">10 практических занятий</li>
-                        <li class="flex items-center gap-2">Автомобили Hyundai Accent</li>
-                        <li class="flex items-center gap-2">Сопровождение в спецЦОН</li>
-                    </ul>
-                    <a href="https://wa.me/77001234567?text=Хочу%20записаться%20на%20Автомат" target="_blank" class="block text-center bg-zarul-yellow text-zarul-black font-bold py-3 rounded-xl hover:bg-yellow-300 transition">Записаться</a>
-                </div>
-
-                <!-- Тариф 3 -->
-                <div class="border border-gray-200 rounded-2xl p-8 shadow-lg hover:shadow-xl transition relative overflow-hidden">
-                    <div class="absolute top-0 left-0 w-full h-2 bg-zarul-black"></div>
-                    <h3 class="text-2xl font-bold mb-2">МКПП (Механика)</h3>
-                    <p class="text-gray-500 mb-6">Классическое обучение</p>
-                    <div class="text-4xl font-extrabold mb-6">50 000 ₸</div>
-                    <ul class="space-y-3 mb-8 text-gray-700">
-                        <li class="flex items-center gap-2">Теория (Офлайн/Онлайн)</li>
-                        <li class="flex items-center gap-2">10 практических занятий</li>
-                        <li class="flex items-center gap-2">Опытные инструкторы</li>
-                        <li class="flex items-center gap-2">Сопровождение в спецЦОН</li>
-                    </ul>
-                    <a href="https://wa.me/77001234567?text=Хочу%20записаться%20на%20Механику" target="_blank" class="block text-center border-2 border-zarul-black text-zarul-black font-bold py-3 rounded-xl hover:bg-zarul-black hover:text-white transition">Записаться</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Карта филиалов 2ГИС / Leaflet -->
-    <section id="branches" class="py-20 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl font-bold text-center mb-12 text-zarul-black">Наши филиалы</h2>
-            <div id="map" class="shadow-xl"></div>
-        </div>
-    </section>
-
-    <!-- Админ Панель (Для колл-центра) -->
-    <section id="admin" class="py-20 bg-zarul-black text-white">
-        <div class="max-w-4xl mx-auto px-4">
-            <h2 class="text-3xl font-bold mb-6 text-zarul-yellow">Панель администратора (CRM)</h2>
-            <p class="mb-6 text-gray-400">Импорт базы клиентов (Excel) для прозвона колл-центром через Firebase/Supabase.</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 uppercase text-gray-400">
+                Сколько времени <br><span class="text-zarul-black">занимает обучение</span>
+            </h2>
             
-            <div class="bg-gray-800 p-6 rounded-xl border border-gray-700">
-                <label class="block text-sm font-medium mb-2">Загрузить таблицу (Excel/CSV)</label>
-                <input type="file" id="excelUpload" accept=".xlsx, .xls, .csv" class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-zarul-yellow file:text-zarul-black hover:file:bg-yellow-300 mb-4"/>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                <!-- Карточка 1 -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.05)] text-center transform transition hover:-translate-y-2">
+                    <span class="inline-block bg-yellow-100 text-yellow-700 font-bold px-4 py-1 rounded-full text-sm mb-6">4 недели</span>
+                    <h3 class="text-xl font-bold mb-6 text-zarul-black">Теория + сдача ПДД<br>тестов из ЦОНа</h3>
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop" alt="Онлайн теория" class="w-full h-48 object-cover rounded-2xl mb-4">
+                </div>
                 
-                <div class="overflow-x-auto mt-6">
-                    <table class="w-full text-left text-sm text-gray-400" id="leadsTable">
-                        <thead class="text-xs text-gray-200 uppercase bg-gray-700">
-                            <tr>
-                                <th class="px-4 py-3">Имя</th>
-                                <th class="px-4 py-3">Телефон</th>
-                                <th class="px-4 py-3">Статус звонка</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leadsBody">
-                            <!-- Данные из Excel появятся здесь -->
-                        </tbody>
-                    </table>
+                <!-- Карточка 2 -->
+                <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.05)] text-center transform transition hover:-translate-y-2">
+                    <span class="inline-block bg-yellow-100 text-yellow-700 font-bold px-4 py-1 rounded-full text-sm mb-6">2 недели</span>
+                    <h3 class="text-xl font-bold mb-6 text-zarul-black">Практика<br>на автодроме</h3>
+                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=500&auto=format&fit=crop" alt="Практика вождения" class="w-full h-48 object-cover rounded-2xl mb-4">
+                </div>
+
+                <!-- Карточка 3 (Выделенная) -->
+                <div class="bg-zarul-yellow rounded-3xl p-8 shadow-xl text-center transform md:scale-105 relative">
+                    <span class="inline-block bg-white text-zarul-black font-bold px-4 py-1 rounded-full text-sm mb-6">Спустя 8 недель</span>
+                    <h3 class="text-xl font-bold mb-6 text-zarul-black">Сертификат<br>об окончании</h3>
+                    <div class="bg-white p-4 rounded-xl shadow-inner h-48 flex items-center justify-center">
+                        <svg class="w-16 h-16 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reels / Видео карусель -->
+    <section id="reels" class="py-20 bg-gray-50 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 mb-8 flex justify-between items-end">
+            <h2 class="text-3xl font-bold text-zarul-black">Смотрите наши будни</h2>
+            <div class="text-gray-500 text-sm">Свайпайте вправо ➔</div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4">
+            <!-- Горизонтальный скролл -->
+            <div class="flex overflow-x-auto snap-x snap-mandatory gap-4 pb-8 hide-scrollbar cursor-grab active:cursor-grabbing" id="reels-container">
+                
+                <!-- Видео 1 -->
+                <a href="https://www.instagram.com/reel/DdY1nhsBb4S/?stkn=ZWF3aGduc3Jlamtv" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                    <div class="absolute top-4 left-4 flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-full bg-white p-1"><img src="IMG_3986.jpg" class="rounded-full"></div>
+                        <span class="text-white font-medium text-sm">Zarul Auto</span>
+                    </div>
+                </a>
+
+                <!-- Видео 2 -->
+                <a href="https://www.instagram.com/reel/DdQkN1bxbVP/?stkn=aGxhaWE3dGc1MDU0" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Видео 3 -->
+                <a href="https://www.instagram.com/reel/Dc2rhQANrM2/?stkn=MWE3dXBheTB2aDEzZQ==" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1469285994282-454ceb49e63c?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Видео 4 -->
+                <a href="https://www.instagram.com/reel/Dc0KVlFsz7d/?stkn=bzVxMm9jOWNlZDA2" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </a>
+                
+                <!-- Видео 5 -->
+                <a href="https://www.instagram.com/reel/Dcflkl2JCjV/?stkn=MWNnMGlod3Q4NzFnYg==" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1605809223788-cb755cb5602b?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Видео 6 -->
+                <a href="https://www.instagram.com/reel/DcdPZ3yonDD/?stkn=Zm1zbDMwNnVjdDg4" target="_blank" class="snap-center flex-shrink-0 w-64 h-[400px] bg-gray-900 rounded-2xl relative overflow-hidden group">
+                    <img src="https://images.unsplash.com/photo-1511211158607-4fbd73c68128?w=400&q=80" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition" alt="Reel">
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="w-16 h-16 bg-red-600 rounded-full flex items-center justify-center pl-1 group-hover:scale-110 transition">
+                            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Яндекс Карта -->
+    <section id="map-section" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-10 text-zarul-black">Филиалы на карте</h2>
+            <div id="map" class="shadow-2xl border border-gray-200"></div>
+        </div>
+    </section>
+
+    <!-- Блог -->
+    <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-4xl font-bold mb-10 text-zarul-black">Блог</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Статья 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+                    <h3 class="font-bold text-lg mb-3">Как получить водительское удостоверение в Казахстане в 2026 году</h3>
+                    <p class="text-gray-500 text-sm mb-6">Подробная инструкция: от записи в автошколу до получения прав в спецЦОНе...</p>
+                    <a href="#" class="text-zarul-black font-semibold hover:text-zarul-yellow transition">Читать →</a>
+                </div>
+                <!-- Статья 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+                    <h3 class="font-bold text-lg mb-3">Автошкола рядом с Нархоз, KBTU, SDU — где учиться студентам Алматы</h3>
+                    <p class="text-gray-500 text-sm mb-6">Ищете автошколу рядом с университетом в Алматы? Разбираем, какой филиал выбрать...</p>
+                    <a href="#" class="text-zarul-black font-semibold hover:text-zarul-yellow transition">Читать →</a>
+                </div>
+                <!-- Статья 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition cursor-pointer">
+                    <h3 class="font-bold text-lg mb-3">Как выбрать автошколу в Алматы: на что обратить внимание</h3>
+                    <p class="text-gray-500 text-sm mb-6">На что смотреть при выборе автошколы: регистрация в АИС МВД, отзывы, автопарк...</p>
+                    <a href="#" class="text-zarul-black font-semibold hover:text-zarul-yellow transition">Читать →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Форма заявки -->
+    <section id="form-section" class="py-20 bg-gray-50 pb-32">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="bg-white rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] p-10 md:p-16 flex flex-col md:flex-row gap-12 items-center border border-gray-100">
+                <div class="md:w-1/2">
+                    <h2 class="text-4xl font-extrabold mb-4 text-zarul-black">Остались вопросы о обучении?</h2>
+                    <p class="text-gray-500 text-lg">Оставьте заявку на бесплатную консультацию, от нашего лучшего менеджера</p>
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <form class="flex flex-col gap-4">
+                        <input type="text" placeholder="+7 (000) 000-00-00" class="w-full bg-gray-100 rounded-xl px-6 py-4 outline-none focus:ring-2 focus:ring-zarul-yellow text-lg">
+                        <input type="text" placeholder="Имя Фамилия" class="w-full bg-gray-100 rounded-xl px-6 py-4 outline-none focus:ring-2 focus:ring-zarul-yellow text-lg">
+                        <button type="submit" class="w-full bg-zarul-yellow text-zarul-black font-bold text-lg py-4 rounded-xl hover:bg-yellow-400 transition mt-2 shadow-lg shadow-yellow-200">
+                            Оставить заявку
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-10 text-center">
-        <p>&copy; 2026 Автошкола ZARUL AUTO. Все права защищены.</p>
+    <footer class="bg-white border-t border-gray-200 pt-8 pb-12">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-3">
+                <span class="font-bold text-xl tracking-wider text-zarul-black">ZARUL <span class="text-zarul-yellow">AUTO</span></span>
+            </div>
+            
+            <div class="text-center md:text-left">
+                <p class="text-sm text-gray-500">Телефонный номер</p>
+                <a href="tel:+77755342221" class="text-xl font-bold text-zarul-black hover:text-zarul-yellow">+7 (775) 534 22 21</a>
+            </div>
+
+            <div class="flex flex-col items-center md:items-end">
+                <p class="text-sm text-gray-500 mb-2">Наши соц сети</p>
+                <div class="flex gap-4">
+                    <!-- Instagram -->
+                    <a href="https://www.instagram.com/zarulauto.kz?stkn=emp6YmZmMXIzbndk" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-zarul-yellow transition text-gray-600 hover:text-white">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    </a>
+                    <!-- WhatsApp -->
+                    <a href="https://wa.me/77755342221" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-[#25D366] transition text-gray-600 hover:text-white">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.102.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964 1.006-3.588c-.608-1.065-.928-2.294-.928-3.544 0-5.024 4.089-9.114 9.114-9.114 5.024 0 9.112 4.09 9.112 9.114 0 5.025-4.088 9.112-9.109 9.112z"/></svg>
+                    </a>
+                    <!-- TikTok -->
+                    <a href="https://www.tiktok.com/@zarulauto.kz?_r=1&_t=ZS-9A1XTpKIfHr" target="_blank" class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center hover:bg-black transition text-gray-600 hover:text-white">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.04.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <!-- Скрипты для карты и Excel -->
+    <!-- Админ Панель (Скрыта в самом низу) -->
+    <section id="admin" class="py-10 bg-gray-900 text-gray-300">
+        <div class="max-w-4xl mx-auto px-4">
+            <h3 class="text-xl font-bold mb-4 text-gray-500">Служебный раздел (Импорт базы)</h3>
+            <div class="bg-gray-800 p-4 rounded-xl border border-gray-700">
+                <input type="file" id="excelUpload" accept=".xlsx, .xls, .csv" class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-700 file:text-gray-300 hover:file:bg-gray-600 mb-4"/>
+                <div class="overflow-x-auto mt-2">
+                    <table class="w-full text-left text-sm" id="leadsTable">
+                        <thead class="text-xs uppercase bg-gray-700 text-gray-400">
+                            <tr>
+                                <th class="px-4 py-2">Имя</th>
+                                <th class="px-4 py-2">Телефон</th>
+                                <th class="px-4 py-2">Статус звонка</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leadsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Скрипты Яндекс Карты и Excel -->
     <script>
-        // --- Инициализация Карты (Leaflet) ---
-        // Координаты Алматы (центр)
-        const map = L.map('map').setView([43.238949, 76.889709], 12);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
+        // Инициализация Яндекс Карты
+        ymaps.ready(init);
+        function init(){
+            var myMap = new ymaps.Map("map", {
+                center: [43.238949, 76.889709], // Алматы
+                zoom: 12,
+                controls: ['zoomControl', 'fullscreenControl']
+            });
 
-        // Добавление меток автошколы
-        const branches = [
-            { name: 'ZARUL AUTO - Центр', coords: [43.238949, 76.889709] },
-            { name: 'ZARUL AUTO - Абая', coords: [43.242949, 76.900709] }
-        ];
+            // Метки автошколы (в стиле логотипа)
+            var points = [
+                [43.238949, 76.889709],
+                [43.242949, 76.900709],
+                [43.220000, 76.850000]
+            ];
 
-        branches.forEach(branch => {
-            L.marker(branch.coords).addTo(map)
-                .bindPopup(`<b>${branch.name}</b><br>Запись: +7 700 123 45 67`);
+            points.forEach(function(coord) {
+                var placemark = new ymaps.Placemark(coord, {
+                    balloonContent: '<b>ZARUL AUTO</b><br>Запись: +7 775 534 22 21'
+                }, {
+                    preset: 'islands#yellowAutoIcon'
+                });
+                myMap.geoObjects.add(placemark);
+            });
+        }
+
+        // Скролл карусели мышкой
+        const slider = document.getElementById('reels-container');
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        slider.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+        });
+        slider.addEventListener('mouseleave', () => { isDown = false; });
+        slider.addEventListener('mouseup', () => { isDown = false; });
+        slider.addEventListener('mousemove', (e) => {
+            if(!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - slider.offsetLeft;
+            const walk = (x - startX) * 2; 
+            slider.scrollLeft = scrollLeft - walk;
         });
 
-        // --- Логика импорта Excel (SheetJS) ---
+        // Логика импорта Excel (SheetJS)
         document.getElementById('excelUpload').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (!file) return;
@@ -202,14 +362,11 @@
                 const data = new Uint8Array(e.target.result);
                 const workbook = XLSX.read(data, {type: 'array'});
                 const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                
-                // Конвертируем Excel в JSON (ожидаем колонки "Имя" и "Телефон")
                 const jsonData = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
                 
                 const tbody = document.getElementById('leadsBody');
-                tbody.innerHTML = ''; // Очищаем таблицу
+                tbody.innerHTML = ''; 
 
-                // Пропускаем первую строку если это заголовки
                 for (let i = 1; i < jsonData.length; i++) {
                     const row = jsonData[i];
                     if(row.length > 0) {
@@ -219,9 +376,9 @@
                         const tr = document.createElement('tr');
                         tr.className = "border-b border-gray-700";
                         tr.innerHTML = `
-                            <td class="px-4 py-3 text-white">${name}</td>
-                            <td class="px-4 py-3 text-zarul-yellow">${phone}</td>
-                            <td class="px-4 py-3">
+                            <td class="px-4 py-2">${name}</td>
+                            <td class="px-4 py-2 text-yellow-500">${phone}</td>
+                            <td class="px-4 py-2">
                                 <select class="bg-gray-700 text-white text-xs rounded p-1">
                                     <option>Не звонили</option>
                                     <option>Думает</option>
@@ -231,9 +388,6 @@
                             </td>
                         `;
                         tbody.appendChild(tr);
-
-                        // Здесь в реальном проекте мы бы отправляли данные в Firebase/Supabase
-                        // firebase.database().ref('leads/').push({ name, phone, status: 'Не звонили' });
                     }
                 }
             };
