@@ -3,395 +3,1024 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Автошкола ZARUL AUTO | Алматы</title>
-    
-    <!-- Подключение Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Подключение Яндекс Карт -->
-    <script src="https://api-maps.yandex.ru/2.1/?apikey=ВАШ_API_КЛЮЧ&lang=ru_RU" type="text/javascript"></script>
+    <title>Zarula Auto — Автошкола в Алматы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Настройка фирменных цветов Tailwind -->
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'zarul-yellow': '#FFCC00',
-                        'zarul-black': '#111111',
-                    }
-                }
+        :root {
+            --surface-0: #05070C;
+            --surface-1: #0A0D12;
+            --surface-2: #0F131C;
+            --surface-3: #161D2B;
+            --surface-4: #1E2636;
+            --surface-5: #263247;
+            
+            --accent: #E9A568;
+            --accent-bright: #FFB574;
+            --accent-dim: #B87D4A;
+            --support: #38BDF8;
+            
+            --text-primary: #FFFFFF;
+            --text-secondary: #A0AEC0;
+            --text-dim: #718096;
+            
+            --radius-sm: 8px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-full: 999px;
+            
+            --spacing-xs: clamp(0.5rem, 2vw, 0.75rem);
+            --spacing-sm: clamp(0.75rem, 2.5vw, 1rem);
+            --spacing-md: clamp(1rem, 3vw, 1.5rem);
+            --spacing-lg: clamp(1.5rem, 4vw, 2.5rem);
+            --spacing-xl: clamp(2rem, 6vw, 4rem);
+            --spacing-2xl: clamp(3rem, 8vw, 6rem);
+            
+            --font-display: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+            
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--surface-0);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 13, 18, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 13, 18, 0.95);
+            box-shadow: var(--shadow-md);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        .logo {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-lg);
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
+            position: relative;
+            overflow: hidden;
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(233, 165, 104, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
-    </script>
 
-    <style>
-        /* =========================================
-           CSS СТИЛИ
-           ========================================= */
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 5rem);
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-bright) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* Скрытие скроллбара для горизонтальной карусели Reels */
-        .hide-scrollbar::-webkit-scrollbar { 
-            display: none; 
+        .hero p {
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
         }
-        .hide-scrollbar { 
-            -ms-overflow-style: none; 
-            scrollbar-width: none; 
+
+        .cta-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            flex-wrap: wrap;
         }
-        
-        /* Стили для карты */
-        #map { 
-            width: 100%; 
-            height: 500px; 
-            border-radius: 1.5rem; 
-            overflow: hidden; 
+
+        .btn {
+            padding: clamp(0.8rem, 2vw, 1.2rem) clamp(1.5rem, 3vw, 2.5rem);
+            border-radius: var(--radius-full);
+            font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            display: inline-block;
         }
-        
-        /* Фон главного экрана */
-        .hero-bg {
-            background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.9)), url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-bright) 100%);
+            color: var(--surface-0);
+            box-shadow: 0 4px 20px rgba(233, 165, 104, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(233, 165, 104, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Section Base */
+        section {
+            padding: var(--spacing-2xl) 0;
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-sm);
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Packages Section */
+        .packages {
+            background: linear-gradient(180deg, var(--surface-0) 0%, var(--surface-1) 100%);
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .package-card {
+            background: var(--surface-2);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .package-card.visible {
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .package-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .package-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-bright) 100%);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .package-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .package-card.featured {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, var(--surface-2) 0%, var(--surface-3) 100%);
+        }
+
+        .package-card.featured::before {
+            transform: scaleX(1);
+        }
+
+        .package-badge {
+            display: inline-block;
+            padding: 0.4rem 1rem;
+            background: var(--accent);
+            color: var(--surface-0);
+            border-radius: var(--radius-full);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .package-name {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .package-price {
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .package-price span {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .package-features {
+            list-style: none;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .package-features li {
+            padding: var(--spacing-sm) 0;
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-sm);
+            color: var(--text-secondary);
+        }
+
+        .package-features li::before {
+            content: '✓';
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: var(--surface-1);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .video-card {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            background: var(--surface-2);
+            transition: transform 0.3s ease;
+            opacity: 0;
+            transform: scale(0.9);
+        }
+
+        .video-card.visible {
+            animation: zoomIn 0.5s ease-out forwards;
+        }
+
+        @keyframes zoomIn {
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .video-card:hover {
+            transform: scale(1.02);
+        }
+
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Locations Section */
+        .locations {
+            background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
+        }
+
+        .locations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .location-card {
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-lg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .location-card.visible {
+            animation: slideInRight 0.6s ease-out forwards;
+        }
+
+        @keyframes slideInRight {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .location-card:hover {
+            background: var(--surface-4);
+            border-color: var(--support);
+        }
+
+        .location-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(56, 189, 248, 0.1);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .location-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .location-address {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .location-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--support);
+            text-decoration: none;
+            font-weight: 500;
+            transition: gap 0.3s ease;
+        }
+
+        .location-link:hover {
+            gap: 0.8rem;
+        }
+
+        /* Features Section */
+        .features {
+            background: var(--surface-2);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-xl);
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: var(--spacing-lg);
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .feature-card.visible {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(233, 165, 104, 0.1) 0%, rgba(233, 165, 104, 0.05) 100%);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            margin: 0 auto var(--spacing-md);
+            font-size: 2rem;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, var(--surface-1) 0%, var(--surface-2) 100%);
+        }
+
+        .contact-content {
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-xl);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: var(--surface-3);
+            border-radius: var(--radius-md);
+            transition: background 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: var(--surface-4);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(233, 165, 104, 0.1);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--surface-0);
+            padding: var(--spacing-xl) 0 var(--spacing-md);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-content {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.6);
+        }
+
+        .whatsapp-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: white;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--surface-2);
+                flex-direction: column;
+                padding: var(--spacing-md);
+                gap: var(--spacing-md);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .packages-grid,
+            .video-grid,
+            .locations-grid,
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Scroll Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo">Zarula Auto</div>
+                <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#home">Главная</a></li>
+                    <li><a href="#packages">Пакеты</a></li>
+                    <li><a href="#video">Видео</a></li>
+                    <li><a href="#locations">Филиалы</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <!-- =========================================
-         HTML СТРУКТУРА
-         ========================================= -->
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Получите права<br>с уверенностью</h1>
+                <p>Современная автошкола в Алматы с опытными инструкторами и индивидуальным подходом к каждому ученику</p>
+                <div class="cta-buttons">
+                    <a href="#packages" class="btn btn-primary">Выбрать пакет</a>
+                    <a href="#contact" class="btn btn-secondary">Связаться с нами</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <!-- 1. Шапка -->
-    <nav class="bg-zarul-black text-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <!-- Логотип -->
-                <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full bg-zarul-yellow flex items-center justify-center text-zarul-black font-bold text-xl">
-                        ZA
-                    </div>
-                    <span class="font-bold text-xl tracking-wider">ZARUL <span class="text-zarul-yellow">AUTO</span></span>
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Почему выбирают нас</h2>
+                <p class="section-subtitle">Мы предлагаем качественное обучение с гарантией результата</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">🚗</div>
+                    <h3 class="feature-title">Современный автопарк</h3>
+                    <p class="feature-description">Новые автомобили с кондиционером и всем необходимым оборудованием</p>
                 </div>
-                
-                <!-- Ссылки (скрыты на мобильных) -->
-                <div class="hidden md:block">
-                    <div class="flex items-baseline space-x-8">
-                        <a href="#timeline" class="font-medium hover:text-zarul-yellow transition">Обучение</a>
-                        <a href="#reels" class="font-medium hover:text-zarul-yellow transition">Отзывы</a>
-                        <a href="#map-section" class="font-medium hover:text-zarul-yellow transition">Филиалы</a>
-                        <a href="#blog" class="font-medium hover:text-zarul-yellow transition">Блог</a>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">👨‍🏫</div>
+                    <h3 class="feature-title">Опытные инструкторы</h3>
+                    <p class="feature-description">Профессиональные преподаватели с многолетним стажем</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">Полный курс теории</h3>
+                    <p class="feature-description">Все материалы для успешной сдачи экзаменов в ЦОНе</p>
+                </div>
+                <div class="feature-card animate-on-scroll">
+                    <div class="feature-icon">✅</div>
+                    <h3 class="feature-title">Высокий процент сдачи</h3>
+                    <p class="feature-description">95% наших учеников сдают экзамен с первого раза</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="packages" id="packages">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Выберите свой пакет</h2>
+                <p class="section-subtitle">Гибкие программы обучения для любого уровня подготовки</p>
+            </div>
+            <div class="packages-grid">
+                <!-- Basic Package -->
+                <div class="package-card animate-on-scroll">
+                    <div class="package-name">Базовый</div>
+                    <div class="package-price">120 000 <span>₸</span></div>
+                    <ul class="package-features">
+                        <li>Уроки теории</li>
+                        <li>Книга теории ПДД</li>
+                        <li>ПДД тесты спецзона</li>
+                        <li>Вождение 5 уроков</li>
+                        <li>Медицинская справка</li>
+                        <li>Первая медицинская помощь</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary" style="width: 100%;">Выбрать</a>
+                </div>
+
+                <!-- Comfort Package -->
+                <div class="package-card featured animate-on-scroll">
+                    <span class="package-badge">Популярный</span>
+                    <div class="package-name">Комфорт</div>
+                    <div class="package-price">150 000 <span>₸</span></div>
+                    <ul class="package-features">
+                        <li>Уроки теории</li>
+                        <li>Книга теории ПДД</li>
+                        <li>ПДД тесты спецзона</li>
+                        <li>Вождение 10 уроков (город + автодром)</li>
+                        <li>Медицинская справка</li>
+                        <li>Первая медицинская помощь</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary" style="width: 100%;">Выбрать</a>
+                </div>
+
+                <!-- Pro Package -->
+                <div class="package-card animate-on-scroll">
+                    <div class="package-name">Про</div>
+                    <div class="package-price">200 000 <span>₸</span></div>
+                    <ul class="package-features">
+                        <li>Уроки теории</li>
+                        <li>Книга теории ПДД</li>
+                        <li>ПДД тесты спецзона</li>
+                        <li>Вождение 15 уроков (город + автодром)</li>
+                        <li>Медицинская справка</li>
+                        <li>Первая медицинская помощь</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-secondary" style="width: 100%;">Выбрать</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section class="video-section" id="video">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Видео о нас</h2>
+                <p class="section-subtitle">Посмотрите, как проходит обучение в нашей автошколе</p>
+            </div>
+            <div class="video-grid">
+                <div class="video-card animate-on-scroll">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
                     </div>
                 </div>
-                
-                <!-- Кнопка WhatsApp -->
-                <div>
-                    <a href="https://wa.me/77755342221" target="_blank" class="flex items-center gap-2 bg-zarul-yellow text-zarul-black font-bold py-2 px-5 rounded-full hover:bg-yellow-400 transition">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.102.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964 1.006-3.588c-.608-1.065-.928-2.294-.928-3.544 0-5.024 4.089-9.114 9.114-9.114 5.024 0 9.112 4.09 9.112 9.114 0 5.025-4.088 9.112-9.109 9.112z"/></svg>
-                        WhatsApp
+                <div class="video-card animate-on-scroll">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="video-card animate-on-scroll">
+                    <div class="video-wrapper">
+                        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Locations Section -->
+    <section class="locations" id="locations">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Наши филиалы</h2>
+                <p class="section-subtitle">4 удобные локации по всему Алматы</p>
+            </div>
+            <div class="locations-grid">
+                <div class="location-card animate-on-scroll">
+                    <div class="location-icon">📍</div>
+                    <div class="location-name">Филиал 1</div>
+                    <div class="location-address">Алматы, удобное расположение</div>
+                    <a href="https://go.2gis.com/XSvNB" target="_blank" class="location-link">
+                        Открыть на карте →
+                    </a>
+                </div>
+                <div class="location-card animate-on-scroll">
+                    <div class="location-icon">📍</div>
+                    <div class="location-name">Филиал 2</div>
+                    <div class="location-address">Алматы, удобное расположение</div>
+                    <a href="https://go.2gis.com/uk9Wg" target="_blank" class="location-link">
+                        Открыть на карте →
+                    </a>
+                </div>
+                <div class="location-card animate-on-scroll">
+                    <div class="location-icon">📍</div>
+                    <div class="location-name">Филиал 3</div>
+                    <div class="location-address">Алматы, удобное расположение</div>
+                    <a href="https://go.2gis.com/DsKrj" target="_blank" class="location-link">
+                        Открыть на карте →
+                    </a>
+                </div>
+                <div class="location-card animate-on-scroll">
+                    <div class="location-icon">📍</div>
+                    <div class="location-name">Филиал 4</div>
+                    <div class="location-address">Алматы, удобное расположение</div>
+                    <a href="https://go.2gis.com/bUcQM" target="_blank" class="location-link">
+                        Открыть на карте →
                     </a>
                 </div>
             </div>
         </div>
-    </nav>
-
-    <!-- 2. Главный экран -->
-    <section class="hero-bg text-white py-24 md:py-32 text-center">
-        <div class="max-w-4xl mx-auto px-4">
-            <h1 class="text-4xl md:text-6xl font-extrabold mb-6 uppercase tracking-tight leading-tight">
-                Уверенно за руль с <span class="text-zarul-yellow">ZARUL AUTO</span>
-            </h1>
-            <p class="text-lg md:text-xl mb-10 text-gray-300">Современный автопарк, опытные инструкторы и удобный график обучения в Алматы.</p>
-            <a href="#form-section" class="inline-block bg-zarul-yellow text-zarul-black font-bold text-lg py-4 px-10 rounded-full hover:bg-yellow-400 transition transform hover:scale-105 shadow-lg shadow-yellow-500/30">
-                Записаться на курс
-            </a>
-        </div>
     </section>
 
-    <!-- 3. Секция "Сколько времени занимает обучение" -->
-    <section id="timeline" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16 uppercase text-zarul-black">
-                Сколько времени <span class="text-zarul-yellow">занимает обучение</span>
-            </h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Теория -->
-                <div class="bg-gray-50 border border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-zarul-yellow opacity-10 rounded-bl-full -z-10 group-hover:scale-150 transition duration-500"></div>
-                    <span class="inline-block bg-zarul-black text-white font-bold px-4 py-1 rounded-full text-sm mb-6">4 недели</span>
-                    <h3 class="text-xl font-bold mb-4 text-zarul-black">Теоретический курс</h3>
-                    <p class="text-gray-600 mb-6">Изучение ПДД, разбор билетов из ЦОНа. Доступно онлайн и офлайн.</p>
-                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop" alt="Теория" class="w-full h-40 object-cover rounded-2xl">
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-content">
+                <div class="section-header">
+                    <h2 class="section-title">Свяжитесь с нами</h2>
+                    <p class="section-subtitle">Ответим на все ваши вопросы и поможем выбрать подходящий пакет</p>
                 </div>
-                
-                <!-- Практика -->
-                <div class="bg-gray-50 border border-gray-100 rounded-3xl p-8 shadow-sm hover:shadow-xl transition relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-zarul-yellow opacity-10 rounded-bl-full -z-10 group-hover:scale-150 transition duration-500"></div>
-                    <span class="inline-block bg-zarul-black text-white font-bold px-4 py-1 rounded-full text-sm mb-6">2 недели</span>
-                    <h3 class="text-xl font-bold mb-4 text-zarul-black">Практика вождения</h3>
-                    <p class="text-gray-600 mb-6">Занятия на автодроме и выезды в город с опытным инструктором.</p>
-                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=500&auto=format&fit=crop" alt="Практика" class="w-full h-40 object-cover rounded-2xl">
-                </div>
-
-                <!-- Сертификат -->
-                <div class="bg-zarul-black text-white rounded-3xl p-8 shadow-xl transform md:scale-105 border-b-4 border-zarul-yellow relative">
-                    <span class="inline-block bg-zarul-yellow text-zarul-black font-bold px-4 py-1 rounded-full text-sm mb-6">Итог</span>
-                    <h3 class="text-xl font-bold mb-4">Сертификат об окончании</h3>
-                    <p class="text-gray-400 mb-6">Официальный документ, необходимый для сдачи экзаменов в СпецЦОНе.</p>
-                    <div class="bg-gray-800 p-4 rounded-xl flex items-center justify-center h-40">
-                        <svg class="w-16 h-16 text-zarul-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div>
+                            <strong>Телефон</strong><br>
+                            +7 (XXX) XXX-XX-XX
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. Карусель Reels -->
-    <section id="reels" class="py-20 bg-gray-50 overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 mb-8 flex justify-between items-center">
-            <h2 class="text-3xl md:text-4xl font-extrabold text-zarul-black uppercase tracking-tight">Наши <span class="text-zarul-yellow">Reels</span></h2>
-            <div class="text-gray-500 text-sm hidden md:flex items-center gap-2 font-medium">
-                Свайпайте вправо 
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-            </div>
-        </div>
-        
-        <div class="max-w-7xl mx-auto px-4">
-            <!-- Контейнер для горизонтального скролла -->
-            <div class="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-8 hide-scrollbar cursor-grab active:cursor-grabbing" id="reels-container">
-                
-                <!-- Видео 1 (Превью с ноутбуком/теорией) -->
-                <div class="snap-center flex-shrink-0 w-[280px] h-[500px] bg-gray-200 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300">
-                    <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Превью видео 1">
-                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-zarul-yellow rounded-full flex items-center justify-center pl-1.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 text-zarul-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                    <div class="contact-item">
+                        <div class="contact-icon">✉️</div>
+                        <div>
+                            <strong>Email</strong><br>
+                            info@zarulaauto.kz
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">⏰</div>
+                        <div>
+                            <strong>Режим работы</strong><br>
+                            Пн-Вс: 09:00 - 20:00
                         </div>
                     </div>
                 </div>
-
-                <!-- Видео 2 (Превью из салона авто с навигатором) -->
-                <div class="snap-center flex-shrink-0 w-[280px] h-[500px] bg-gray-200 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300">
-                    <img src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e?w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Превью видео 2">
-                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-zarul-yellow rounded-full flex items-center justify-center pl-1.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 text-zarul-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Видео 3 (Превью спортивного авто) -->
-                <div class="snap-center flex-shrink-0 w-[280px] h-[500px] bg-gray-200 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300">
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Превью видео 3">
-                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-zarul-yellow rounded-full flex items-center justify-center pl-1.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 text-zarul-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Видео 4 (Превью вождения в городе) -->
-                <div class="snap-center flex-shrink-0 w-[280px] h-[500px] bg-gray-200 rounded-[2.5rem] relative overflow-hidden group shadow-sm hover:shadow-xl transition-all duration-300">
-                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Превью видео 4">
-                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition duration-300"></div>
-                    <div class="absolute inset-0 flex items-center justify-center">
-                        <div class="w-16 h-16 bg-zarul-yellow rounded-full flex items-center justify-center pl-1.5 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                            <svg class="w-8 h-8 text-zarul-black" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </div>
     </section>
 
-    <!-- 5. Яндекс Карты -->
-    <section id="map-section" class="py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 uppercase text-zarul-black">Наши <span class="text-zarul-yellow">филиалы</span></h2>
-            <div id="map" class="shadow-2xl border-4 border-gray-100"></div>
-        </div>
-    </section>
-
-    <!-- 6. Блог -->
-    <section id="blog" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold mb-12 text-zarul-black uppercase">Полезные <span class="text-zarul-yellow">статьи</span></h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <!-- Карточка статьи 1 -->
-                <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=600&q=80" alt="Blog 1" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-bold text-xl mb-3 text-zarul-black">Как сдать на права с первого раза?</h3>
-                        <p class="text-gray-500 text-sm mb-6 flex-grow">Секреты успешной сдачи практического экзамена в СпецЦОНе. Разбираем частые ошибки новичков...</p>
-                        <a href="#" class="text-zarul-yellow font-bold hover:text-yellow-600 transition inline-flex items-center gap-2">
-                            Читать статью <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </a>
-                    </div>
-                </article>
-                
-                <!-- Карточка статьи 2 -->
-                <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=600&q=80" alt="Blog 2" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-bold text-xl mb-3 text-zarul-black">Автошкола для студентов: скидки и график</h3>
-                        <p class="text-gray-500 text-sm mb-6 flex-grow">Совмещаем учебу в университете и получение прав. Специальные условия для студентов Алматы...</p>
-                        <a href="#" class="text-zarul-yellow font-bold hover:text-yellow-600 transition inline-flex items-center gap-2">
-                            Читать статью <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </a>
-                    </div>
-                </article>
-
-                <!-- Карточка статьи 3 -->
-                <article class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col">
-                    <img src="https://images.unsplash.com/photo-1600320254374-ce2d293c324e?w=600&q=80" alt="Blog 3" class="w-full h-48 object-cover">
-                    <div class="p-6 flex flex-col flex-grow">
-                        <h3 class="font-bold text-xl mb-3 text-zarul-black">Изменения в ПДД РК 2026 года</h3>
-                        <p class="text-gray-500 text-sm mb-6 flex-grow">Краткий обзор всех нововведений в правилах дорожного движения, о которых нужно знать каждому водителю...</p>
-                        <a href="#" class="text-zarul-yellow font-bold hover:text-yellow-600 transition inline-flex items-center gap-2">
-                            Читать статью <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                        </a>
-                    </div>
-                </article>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Zarula Auto. Все права защищены.</p>
             </div>
-        </div>
-    </section>
-
-    <!-- 7. Форма заявки -->
-    <section id="form-section" class="py-20 bg-zarul-black relative overflow-hidden">
-        <!-- Желтый декоративный круг на фоне -->
-        <div class="absolute -top-24 -right-24 w-64 h-64 bg-zarul-yellow rounded-full opacity-20 blur-3xl"></div>
-        
-        <div class="max-w-4xl mx-auto px-4 relative z-10">
-            <div class="bg-gray-900 border border-gray-800 rounded-[2.5rem] p-10 md:p-16 flex flex-col md:flex-row gap-12 items-center shadow-2xl">
-                <div class="md:w-1/2 text-white">
-                    <h2 class="text-4xl font-extrabold mb-4 uppercase">Начни <span class="text-zarul-yellow">сейчас</span></h2>
-                    <p class="text-gray-400 text-lg">Оставьте заявку, и наш менеджер свяжется с вами в течение 10 минут, чтобы проконсультировать по ценам и графику.</p>
-                </div>
-                <div class="md:w-1/2 w-full">
-                    <form class="flex flex-col gap-4">
-                        <input type="text" placeholder="Ваше Имя" required class="w-full bg-gray-800 text-white rounded-xl px-6 py-4 outline-none border border-gray-700 focus:border-zarul-yellow focus:ring-1 focus:ring-zarul-yellow text-lg transition">
-                        <input type="tel" placeholder="+7 (___) ___-__-__" required class="w-full bg-gray-800 text-white rounded-xl px-6 py-4 outline-none border border-gray-700 focus:border-zarul-yellow focus:ring-1 focus:ring-zarul-yellow text-lg transition">
-                        <button type="submit" class="w-full bg-zarul-yellow text-zarul-black font-bold text-lg py-4 rounded-xl hover:bg-yellow-400 transition mt-2 shadow-lg shadow-yellow-500/20">
-                            Отправить заявку
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. Футер -->
-    <footer class="bg-white py-12">
-        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-8">
-            <!-- Логотип футера -->
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-full bg-zarul-yellow flex items-center justify-center text-zarul-black font-bold text-lg">ZA</div>
-                <span class="font-bold text-xl tracking-wider text-zarul-black">ZARUL <span class="text-zarul-yellow">AUTO</span></span>
-            </div>
-            
-            <!-- Контакты -->
-            <div class="text-center">
-                <p class="text-sm text-gray-500 mb-1">Звоните или пишите</p>
-                <a href="tel:+77755342221" class="text-2xl font-black text-zarul-black hover:text-zarul-yellow transition">+7 (775) 534 22 21</a>
-            </div>
-
-            <!-- Соцсети -->
-            <div class="flex gap-4">
-                <!-- Instagram -->
-                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-zarul-yellow transition text-gray-800 hover:text-zarul-black">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </a>
-                <!-- TikTok -->
-                <a href="#" class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center hover:bg-black transition text-gray-800 hover:text-white">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.04.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-                </a>
-            </div>
-        </div>
-        <div class="text-center text-gray-400 text-sm mt-8">
-            &copy; 2026 ZARUL AUTO. Все права защищены.
         </div>
     </footer>
 
-    <!-- =========================================
-         JAVASCRIPT СЛОЙ
-         ========================================= -->
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/77XXXXXXXXX" target="_blank" class="whatsapp-btn" title="Написать в WhatsApp">
+        <svg viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+
     <script>
-        /* 
-           1. Скрипт инициализации Яндекс Карт 
-        */
-        ymaps.ready(init);
-        function init(){
-            var myMap = new ymaps.Map("map", {
-                center: [43.238949, 76.889709], // Координаты Алматы
-                zoom: 12,
-                controls: ['zoomControl', 'fullscreenControl']
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
+                }
             });
+        });
 
-            // Метки филиалов (примерные координаты)
-            var points = [
-                { coords: [43.238949, 76.889709], address: 'ул. Абая, 1' },
-                { coords: [43.242949, 76.900709], address: 'ул. Толе би, 2' },
-                { coords: [43.220000, 76.850000], address: 'мкр. Сайран, 3' }
-            ];
+        // Header scroll effect
+        let lastScroll = 0;
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
 
-            points.forEach(function(point) {
-                var placemark = new ymaps.Placemark(point.coords, {
-                    balloonContent: `<b>ZARUL AUTO</b><br>${point.address}<br>Тел: +7 775 534 22 21`
-                }, {
-                    preset: 'islands#yellowAutoIcon' // Желтая иконка с авто
-                });
-                myMap.geoObjects.add(placemark);
-            });
+        // Mobile menu toggle
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
         }
 
-        /* 
-           2. Скрипт для скроллинга карусели Reels мышкой на ПК
-        */
-        const slider = document.getElementById('reels-container');
-        let isDown = false;
-        let startX;
-        let scrollLeft;
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-        slider.addEventListener('mousedown', (e) => {
-            isDown = true;
-            slider.classList.add('active');
-            startX = e.pageX - slider.offsetLeft;
-            scrollLeft = slider.scrollLeft;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animated elements
+        document.querySelectorAll('.animate-on-scroll, .package-card, .video-card, .location-card, .feature-card').forEach(el => {
+            observer.observe(el);
         });
-        slider.addEventListener('mouseleave', () => { 
-            isDown = false; 
-            slider.classList.remove('active');
+
+        // Add stagger delay to grid items
+        document.querySelectorAll('.packages-grid .package-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
         });
-        slider.addEventListener('mouseup', () => { 
-            isDown = false; 
-            slider.classList.remove('active');
+
+        document.querySelectorAll('.features-grid .feature-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
         });
-        slider.addEventListener('mousemove', (e) => {
-            if(!isDown) return;
-            e.preventDefault();
-            const x = e.pageX - slider.offsetLeft;
-            const walk = (x - startX) * 2; // Скорость прокрутки
-            slider.scrollLeft = scrollLeft - walk;
+
+        document.querySelectorAll('.locations-grid .location-card').forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
         });
-        
-        /* 
-           3. Обработка формы (имитация отправки)
-        */
-        const form = document.querySelector('form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Спасибо за заявку! Наш менеджер скоро свяжется с вами.');
-            form.reset();
+
+        // Parallax effect for hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero-content');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                hero.style.opacity = 1 - (scrolled / 800);
+            }
         });
+
+        // Update video iframes with actual video IDs when available
+        // Replace the placeholder YouTube video IDs with actual ones
+        // Example: https://www.youtube.com/embed/YOUR_VIDEO_ID
     </script>
 </body>
 </html>
